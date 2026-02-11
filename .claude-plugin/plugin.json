@@ -1,0 +1,36 @@
+{
+  "name": "kdd",
+  "version": "0.1.0",
+  "description": "KDD (Knowledge-Driven Development) - Claude Code plugin for specification-driven development workflows.",
+  "author": {
+    "name": "Knowledge-Driven Development"
+  },
+  "homepage": "https://github.com/knowledge-driven-dev/kdd-claude-code",
+  "repository": "https://github.com/knowledge-driven-dev/kdd-claude-code",
+  "keywords": [
+    "kdd",
+    "specifications",
+    "domain-driven",
+    "documentation",
+    "markdown",
+    "obsidian",
+    "wiki-links"
+  ],
+  "license": "MIT",
+  "commands": [
+    "./commands/feature.md",
+    "./commands/ui.md",
+    "./commands/fix-spec.md",
+    "./commands/validate-deps.md",
+    "./commands/list-entities.md",
+    "./commands/analyze-entities.md",
+    "./commands/generate-story.md",
+    "./commands/sync-story.md",
+    "./commands/validate.md"
+  ],
+  "skills": "./skills",
+  "agents": [
+    "./agents/requirement-analyst.md"
+  ],
+  "hooks": "./hooks/hooks.json"
+}
