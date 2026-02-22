@@ -1,0 +1,27 @@
+{
+  "name": "kdd-spec-validator",
+  "version": "0.1.0",
+  "description": "CLI validator for KDD (Knowledge-Driven Development) specifications",
+  "type": "module",
+  "bin": {
+    "kdd-validate": "./src/index.ts",
+    "kdd-generate-index": "./src/generate-index.ts"
+  },
+  "scripts": {
+    "validate": "bun run ./src/index.ts",
+    "validate:fix": "bun run ./src/index.ts --fix",
+    "generate-index": "bun run ./src/generate-index.ts"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "glob": "^10.3.10",
+    "gray-matter": "^4.0.3",
+    "remark-parse": "^11.0.0",
+    "unified": "^11.0.4",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.3",
+    "typescript": "^5.3.3"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "If the file just written is in the /specs directory, remind yourself to:\n1. Verify all wiki-links [[]] are valid\n2. Check frontmatter is complete for the artifact type\n3. Ensure layer dependencies are respected (lower layers cannot reference higher layers)\n4. Suggest running /kdd:fix-spec if issues are found\n\nOnly mention this if relevant to the file written. Be concise.",
+            "condition": "file_path contains 'specs/'"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Write",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before writing to a spec file, ensure:\n1. Domain entities are capitalized in prose\n2. First mentions use wiki-links [[Entity]]\n3. Frontmatter matches the artifact type schema\n4. Required sections are present\n\nProceed with the write.",
+            "condition": "file_path contains 'specs/'"
+          }
+        ]
+      }
+    ]
+  }
+}
