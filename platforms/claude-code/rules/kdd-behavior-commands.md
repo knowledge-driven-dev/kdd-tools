@@ -28,11 +28,7 @@ Ejemplos:
 ---
 id: CMD-NNN                   # Obligatorio
 kind: command                 # Literal
-title: Nombre del Comando     # Obligatorio
-status: draft                 # draft|review|approved|deprecated
-billable: false               # Si consume créditos
-credit-cost: 0                # Créditos consumidos (si billable: true)
-tags: [core]                  # Categorización
+status: draft                 # draft|review|approved|deprecated|superseded
 ---
 ```
 
@@ -105,39 +101,13 @@ Patrón: `CMD-NNN-EXX`
 - `CMD-001-E01` → Primer error del comando 001
 - `CMD-001-E02` → Segundo error del comando 001
 
-## Comandos Billable
-
-Si el comando consume créditos:
-
-```yaml
----
-billable: true
-credit-cost: 1
----
-```
-
-Agregar en Preconditions:
-```markdown
-## Preconditions
-- Usuario tiene al menos {credit-cost} créditos disponibles
-```
-
-Y en Rules Validated:
-```markdown
-## Rules Validated
-- [[BP-CREDITOS-001]] - Verificación de créditos
-```
-
 ## Ejemplo Completo
 
 ```markdown
 ---
 id: CMD-001
 kind: command
-title: Crear Reto
 status: approved
-billable: false
-tags: [core, reto]
 ---
 
 # CMD-001: CrearReto

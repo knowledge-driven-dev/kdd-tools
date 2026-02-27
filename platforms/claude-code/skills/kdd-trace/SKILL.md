@@ -32,14 +32,15 @@ Actívate cuando el usuario:
 
 ```
 specs/
-├── 00-requirements/     # PRD, objetivos, decisiones de alto nivel
+├── 00-requirements/     # INPUT: PRD, objetivos, value units, releases
 │   ├── PRD.md
-│   ├── objectives/
-│   └── decisions/       # ADRs de requisitos
+│   ├── objectives/      # OBJ-*
+│   ├── value-units/     # UV-*
+│   └── releases/        # REL-*
 │
-├── 01-domain/           # Modelo de dominio (NO referencia capas superiores)
+├── 01-domain/           # BASE: Modelo de dominio (NO referencia capas superiores)
 │   ├── entities/        # Entidades del dominio
-│   ├── rules/           # Reglas de negocio (BR-*, BP-*)
+│   ├── rules/           # Reglas de negocio (BR-NNN-{Name})
 │   └── events/          # Eventos de dominio (EVT-*)
 │
 ├── 02-behavior/         # Qué puede hacer el sistema
@@ -47,18 +48,19 @@ specs/
 │   ├── queries/         # Consultas (QRY-*)
 │   ├── processes/       # Procesos orquestados (PROC-*)
 │   ├── use-cases/       # Casos de uso (UC-*)
-│   └── policies/        # Políticas transversales
+│   └── policies/        # Políticas (BP-*, XP-*)
 │
 ├── 03-experience/       # Cómo interactúa el usuario
 │   ├── views/           # Vistas/pantallas (UI-*)
-│   └── flows/           # Flujos multi-paso (FLOW-*)
+│   └── components/      # Componentes reutilizables
 │
 ├── 04-verification/     # Criterios de aceptación
-│   └── criteria/        # Requisitos verificables (REQ-*)
+│   ├── requirements/    # Requisitos verificables (REQ-*)
+│   └── examples/        # Escenarios Gherkin (.feature)
 │
-└── 05-architecture/     # Decisiones técnicas
-    ├── decisions/       # ADRs técnicos
-    └── implementation-charter.md
+└── 05-architecture/     # ORTHOGONAL: Decisiones técnicas
+    ├── decisions/       # ADRs (técnicos y de requisitos)
+    └── charter.md
 ```
 
 ## Reglas de Dependencia entre Capas
@@ -66,28 +68,31 @@ specs/
 **Las capas inferiores NO pueden referenciar capas superiores.**
 
 ```
-00-requirements  ←──────────────────────────────────────┐
-       ↓ puede referenciar                              │
-01-domain        ←─────────────────────────────────┐    │
-       ↓ puede referenciar                         │    │
-02-behavior  ←────────────────────────────┐    │    │
-       ↓ puede referenciar                    │    │    │
-03-experience    ←───────────────────────┐    │    │    │
-       ↓ puede referenciar               │    │    │    │
-04-verification  ────────────────────────┴────┴────┴────┘
-       ↓ puede referenciar
-05-architecture  (puede referenciar todas)
+00-requirements  (INPUT — alimenta el diseño, puede mencionar conceptos de dominio)
+
+01-domain        ←─────────────────────────────────┐
+       ↓ puede referenciar                         │
+02-behavior      ←────────────────────────────┐    │
+       ↓ puede referenciar                    │    │
+03-experience    ←───────────────────────┐    │    │
+       ↓ puede referenciar               │    │    │
+04-verification  ────────────────────────┴────┴────┘
+
+05-architecture  (ORTHOGONAL — puede referenciar cualquier capa)
+
+Dependencia del flujo principal: 04 → 03 → 02 → 01
 ```
 
 ### Direccionalidad de Referencias
 
 | Capa Origen | Puede Referenciar | NO Puede Referenciar |
 |-------------|-------------------|----------------------|
-| `01-domain` | Solo dentro de 01-domain | 02, 03, 04, 05 |
-| `02-behavior` | 01-domain, 02-behavior | 03, 04, 05 |
-| `03-experience` | 01-domain, 02-behavior | 04, 05 |
-| `04-verification` | 01, 02, 03 | 05 |
-| `05-architecture` | Todas las capas | - |
+| `00-requirements` | Puede mencionar conceptos de dominio (INPUT) | No forma parte de la cadena de dependencia |
+| `01-domain` | Solo dentro de 01-domain | 02, 03, 04 |
+| `02-behavior` | 01-domain, 02-behavior | 03, 04 |
+| `03-experience` | 01-domain, 02-behavior | 04 |
+| `04-verification` | 01, 02, 03 | - |
+| `05-architecture` | Todas las capas (ORTHOGONAL) | - |
 
 ### Trazabilidad Válida (dirección correcta)
 
@@ -120,7 +125,7 @@ No asumas estructura - las capas pueden haber cambiado.
 ### Fase 2: Escanear Artefactos
 
 Lee todos los archivos en `specs/` y extrae:
-- IDs de artefactos (UC-001, BR-RETO-001, CMD-001, etc.)
+- IDs de artefactos (UC-001, BR-001-LimiteReto, CMD-001, etc.)
 - Wiki-links entre documentos `[[Entidad]]`
 - Referencias en frontmatter (`links:`)
 
@@ -135,15 +140,15 @@ Genera la matriz de trazabilidad **siguiendo la dirección correcta**:
 
 | Entidad | Reglas que la usan | Eventos que la afectan |
 |---------|-------------------|------------------------|
-| [[Reto]] | BR-RETO-* (7) | EVT-Reto-* (5) |
-| [[Sesión]] | BR-SESION-* (6) | EVT-Sesion-* (8) |
+| [[Reto]] | BR-001..007 (7) | EVT-Reto-* (5) |
+| [[Sesión]] | BR-008..013 (6) | EVT-Sesion-* (8) |
 
 ### Desde Reglas hacia Capabilities (02)
 
 | Regla | Comandos que la validan | Queries que la consultan |
 |-------|-------------------------|--------------------------|
-| BR-RETO-002 | CMD-001, CMD-002 | - |
-| BR-SESION-001 | CMD-009 | QRY-003 |
+| BR-002-RetoMaxLength | CMD-001, CMD-002 | - |
+| BR-008-SesionActiva | CMD-009 | QRY-003 |
 
 ### Desde Capabilities hacia Experience (03)
 
@@ -157,7 +162,7 @@ Genera la matriz de trazabilidad **siguiendo la dirección correcta**:
 | Artefacto | Criterios de Aceptación |
 |-----------|-------------------------|
 | UC-001 | REQ-001.1 a REQ-001.7 |
-| BR-RETO-002 | REQ-001.4 |
+| BR-002-RetoMaxLength | REQ-001.4 |
 ```
 
 ### Fase 4: Análisis de Cobertura
@@ -198,7 +203,7 @@ Si el usuario lo solicita, genera diagrama Mermaid **respetando direccionalidad*
 graph BT
     subgraph "01-domain"
         E[Entidad: Reto]
-        R[BR-RETO-002]
+        R[BR-002-RetoMaxLength]
         EV[EVT-Reto-Creado]
     end
 
@@ -245,12 +250,12 @@ Ejemplo para `[[Reto]]`:
 (Entidad no referencia nada - capa más baja)
 
 ### Referenciado por (hacia arriba)
-- 01-domain/rules: BR-RETO-* (7 reglas)
+- 01-domain/rules: BR-001..007 (7 reglas)
 - 01-domain/events: EVT-Reto-* (5 eventos)
 - 02-behavior/commands: CMD-001 a CMD-004
 - 02-behavior/use-cases: UC-001, UC-010
 - 03-experience/views: UI-RetoCard, UI-RetoList, UI-RetoEditor
-- 04-verification/criteria: REQ-001, REQ-010
+- 04-verification/requirements: REQ-001, REQ-010
 ```
 
 ### Trazabilidad de Capa
@@ -272,4 +277,4 @@ Muestra conexiones de una capa hacia capas adyacentes.
 
 - Metodología KDD: `kdd/kdd.md`
 - Documentación de capas: `kdd/docs/layers/`
-- Matriz existente: `specs/04-verification/criteria/_TRACEABILITY.md`
+- Matriz existente: `specs/04-verification/requirements/_TRACEABILITY.md`

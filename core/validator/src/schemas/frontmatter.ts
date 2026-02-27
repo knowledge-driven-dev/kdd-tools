@@ -1,140 +1,209 @@
 /**
  * Schemas Zod para validación de frontmatter por tipo de documento
+ * Alineado con KDD v2.0 — frontmatter simplificado: id, kind, status
  */
 
 import { z } from 'zod'
 import type { DocType } from '../lib/parser'
 
-// Valores comunes
-const statusSchema = z.enum(['draft', 'proposed', 'approved', 'deprecated']).optional()
-const tagsSchema = z.array(z.string()).optional()
-const domainSchema = z.string().optional()
+// Valores comunes v2.0
+const statusSchema = z.enum(['draft', 'review', 'approved', 'deprecated', 'superseded']).optional()
 
 // =============================================================================
-// Schema: Use Case (UC-xxx)
+// Schema: Use Case (UC-NNN)
 // =============================================================================
 export const useCaseFrontmatterSchema = z.object({
   id: z
     .string()
-    .regex(/^UC-\d{3}/, 'El ID debe seguir el formato UC-XXX')
-    .describe('Identificador único del caso de uso'),
-  version: z.number().int().positive().optional(),
+    .regex(/^UC-\d{3}/, 'ID must follow format UC-NNN'),
+  kind: z.literal('use-case').optional(),
   status: statusSchema,
-  actor: z.string().min(1, 'El actor principal es requerido'),
-  domain: domainSchema,
-  tags: tagsSchema,
 })
 
 // =============================================================================
-// Schema: Requirement (REQ-xxx)
+// Schema: Requirement (REQ-NNN)
 // =============================================================================
 export const requirementFrontmatterSchema = z.object({
   id: z
     .string()
-    .regex(/^REQ-\d{3}/, 'El ID debe seguir el formato REQ-XXX')
-    .describe('Identificador único del requisito'),
-  kind: z.literal('requirements').optional(),
+    .regex(/^REQ-\d{3}/, 'ID must follow format REQ-NNN'),
+  kind: z.literal('requirement').optional(),
   status: statusSchema,
   source: z
     .string()
-    .regex(/^UC-\d{3}/, 'El source debe referenciar un caso de uso UC-XXX')
+    .regex(/^UC-\d{3}/, 'source must reference a use case UC-NNN')
     .optional(),
-  domain: domainSchema,
-  tags: tagsSchema,
 })
 
 // =============================================================================
-// Schema: Entity
+// Schema: Entity (entity | role | system | catalog)
 // =============================================================================
 export const entityFrontmatterSchema = z.object({
+  kind: z.enum(['entity', 'role', 'system', 'catalog']),
   aliases: z.array(z.string()).optional(),
-  tags: z
-    .array(z.string())
-    .refine((tags) => tags.includes('entity'), {
-      message: 'Las entidades deben incluir el tag "entity"',
-    })
-    .optional(),
+  source: z.string().optional(),
+  scope: z.string().optional(),
+  'change-frequency': z.string().optional(),
 })
 
 // =============================================================================
 // Schema: Event (EVT-xxx)
 // =============================================================================
 export const eventFrontmatterSchema = z.object({
-  tags: z
-    .array(z.string())
-    .refine((tags) => tags.includes('event'), {
-      message: 'Los eventos deben incluir el tag "event"',
-    })
-    .optional(),
-  source: z.string().optional().describe('Entidad que emite el evento'),
+  kind: z.literal('event').optional(),
 })
 
 // =============================================================================
-// Schema: Rule (BR-xxx)
+// Schema: Rule — Business Rule (BR-NNN-Name)
 // =============================================================================
 export const ruleFrontmatterSchema = z.object({
-  kind: z.enum(['rule', 'rules']).optional(),
-  entity: z.string().optional().describe('Entidad principal afectada'),
-  domain: domainSchema,
-  tags: tagsSchema,
+  id: z
+    .string()
+    .regex(/^BR-\d{3}/, 'ID must follow format BR-NNN'),
+  kind: z.enum(['business-rule', 'rule', 'rules']).optional(),
+  status: statusSchema,
 })
 
 // =============================================================================
-// Schema: Process (PRC-xxx)
+// Schema: Business Policy (BP-NNN-Name)
+// =============================================================================
+export const businessPolicyFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^BP-\d{3}/, 'ID must follow format BP-NNN'),
+  kind: z.literal('business-policy').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: Cross-Policy (XP-NNN-Name)
+// =============================================================================
+export const crossPolicyFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^XP-\d{3}/, 'ID must follow format XP-NNN'),
+  kind: z.literal('cross-policy').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: Process (PROC-NNN)
 // =============================================================================
 export const processFrontmatterSchema = z.object({
   id: z
     .string()
-    .regex(/^PRC-\d{3}/, 'El ID debe seguir el formato PRC-XXX')
-    .optional(),
+    .regex(/^PROC-\d{3}/, 'ID must follow format PROC-NNN'),
   kind: z.literal('process').optional(),
   status: statusSchema,
-  domain: domainSchema,
-  tags: tagsSchema,
 })
 
 // =============================================================================
-// Schema: PRD
+// Schema: Command (CMD-NNN)
 // =============================================================================
-export const prdFrontmatterSchema = z.object({
-  id: z.string().regex(/^PRD-/, 'El ID debe comenzar con PRD-').optional(),
-  kind: z.literal('prd').optional(),
-  status: statusSchema,
-  owner: z.string().optional(),
-  stakeholders: z.array(z.string()).optional(),
-  related: z.array(z.string()).optional(),
-  success_metrics: z.array(z.string()).optional(),
-  release_criteria: z.array(z.string()).optional(),
-})
-
-// =============================================================================
-// Schema: Story (US-xxx, STORY-xxx)
-// =============================================================================
-export const storyFrontmatterSchema = z.object({
+export const commandFrontmatterSchema = z.object({
   id: z
     .string()
-    .regex(/^(US-|STORY-)/, 'El ID debe comenzar con US- o STORY-')
-    .optional(),
-  kind: z.literal('story').optional(),
+    .regex(/^CMD-\d{3}/, 'ID must follow format CMD-NNN'),
+  kind: z.literal('command').optional(),
   status: statusSchema,
-  related: z.array(z.string()).optional(),
 })
 
 // =============================================================================
-// Schema: NFR
+// Schema: Query (QRY-NNN)
+// =============================================================================
+export const queryFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^QRY-\d{3}/, 'ID must follow format QRY-NNN'),
+  kind: z.literal('query').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: PRD (PRD-*)
+// =============================================================================
+export const prdFrontmatterSchema = z.object({
+  id: z.string().regex(/^PRD-/, 'ID must start with PRD-').optional(),
+  kind: z.literal('prd').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: NFR (NFR-*)
 // =============================================================================
 export const nfrFrontmatterSchema = z.object({
-  id: z.string().regex(/^NFR-/, 'El ID debe comenzar con NFR-').optional(),
+  id: z.string().regex(/^NFR-/, 'ID must start with NFR-').optional(),
   kind: z.literal('nfr').optional(),
   status: statusSchema,
 })
 
 // =============================================================================
-// Schema: ADR
+// Schema: ADR (ADR-NNNN)
 // =============================================================================
 export const adrFrontmatterSchema = z.object({
-  id: z.string().regex(/^ADR-\d{4}/, 'El ID debe seguir el formato ADR-XXXX').optional(),
+  id: z.string().regex(/^ADR-\d{4}/, 'ID must follow format ADR-NNNN').optional(),
   kind: z.literal('adr').optional(),
+  status: statusSchema,
+  supersedes: z.string().optional(),
+  superseded_by: z.string().optional(),
+})
+
+// =============================================================================
+// Schema: Objective (OBJ-NNN)
+// =============================================================================
+export const objectiveFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^OBJ-\d{3}/, 'ID must follow format OBJ-NNN'),
+  kind: z.literal('objective').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: Value Unit (UV-NNN)
+// =============================================================================
+export const valueUnitFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^UV-\d{3}/, 'ID must follow format UV-NNN'),
+  kind: z.literal('value-unit').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: Release (REL-NNN)
+// =============================================================================
+export const releaseFrontmatterSchema = z.object({
+  id: z
+    .string()
+    .regex(/^REL-\d{3}/, 'ID must follow format REL-NNN'),
+  kind: z.literal('release').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: Implementation Charter (ARCH-CHARTER-*)
+// =============================================================================
+export const implementationCharterFrontmatterSchema = z.object({
+  id: z.string().regex(/^ARCH-CHARTER/, 'ID must start with ARCH-CHARTER').optional(),
+  kind: z.literal('implementation-charter').optional(),
+  status: statusSchema,
+  supersedes: z.string().optional(),
+})
+
+// =============================================================================
+// Schema: UI View
+// =============================================================================
+export const uiViewFrontmatterSchema = z.object({
+  kind: z.literal('ui-view').optional(),
+  status: statusSchema,
+})
+
+// =============================================================================
+// Schema: UI Component
+// =============================================================================
+export const uiComponentFrontmatterSchema = z.object({
+  kind: z.literal('ui-component').optional(),
   status: statusSchema,
 })
 
@@ -152,11 +221,20 @@ export const frontmatterSchemas: Record<DocType, z.ZodSchema> = {
   entity: entityFrontmatterSchema,
   event: eventFrontmatterSchema,
   rule: ruleFrontmatterSchema,
+  'business-policy': businessPolicyFrontmatterSchema,
+  'cross-policy': crossPolicyFrontmatterSchema,
   process: processFrontmatterSchema,
+  command: commandFrontmatterSchema,
+  query: queryFrontmatterSchema,
   prd: prdFrontmatterSchema,
-  story: storyFrontmatterSchema,
   nfr: nfrFrontmatterSchema,
   adr: adrFrontmatterSchema,
+  objective: objectiveFrontmatterSchema,
+  'value-unit': valueUnitFrontmatterSchema,
+  release: releaseFrontmatterSchema,
+  'implementation-charter': implementationCharterFrontmatterSchema,
+  'ui-view': uiViewFrontmatterSchema,
+  'ui-component': uiComponentFrontmatterSchema,
   unknown: unknownFrontmatterSchema,
 }
 

@@ -23,8 +23,8 @@ Lee el archivo `${CLAUDE_PLUGIN_ROOT}/../kdd/kdd.md` para entender la estructura
 ### Si el usuario proporciona una idea (hay texto en $ARGUMENTS):
 
 1. **Lee la documentación del dominio existente**:
-   - Revisa las entidades en `specs/02-domain/entities/` para entender el modelo actual
-   - Revisa las reglas en `specs/02-domain/rules/` para conocer restricciones existentes
+   - Revisa las entidades en `specs/01-domain/entities/` para entender el modelo actual
+   - Revisa las reglas en `specs/01-domain/rules/` para conocer restricciones existentes
    - Identifica qué entidades podrían estar involucradas en esta idea
 
 2. **Inicia el refinamiento conversacional** siguiendo estas fases:
@@ -61,25 +61,25 @@ Lee el archivo `${CLAUDE_PLUGIN_ROOT}/../kdd/kdd.md` para entender la estructura
 ```markdown
 ## Resumen: [Nombre de la Feature]
 
-### Impacto en el Dominio (02-domain/)
+### Impacto en el Dominio (01-domain/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
 | Entidad | [[X]] | Crear/Modificar |
 | Evento | EVT-X | Crear |
 | Regla | BR-X | Crear |
 
-### Capacidades (03-capabilities/)
+### Comportamiento (02-behavior/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
 | Comando | CMD-X | Crear |
+| Caso de Uso | UC-XXX-X | Crear |
 
-### Interacción (04-interaction/)
+### Experiencia (03-experience/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
-| Caso de Uso | UC-XXX-X | Crear |
 | Vista | UI-X | Crear/Modificar |
 
-### Verificación (05-verification/)
+### Verificación (04-verification/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
 | Criterios | REQ-XXX-X | Crear |
@@ -115,8 +115,8 @@ Explica brevemente el proceso y pregunta:
 - Referencia KDD: `${CLAUDE_PLUGIN_ROOT}/../kdd/kdd.md`
 - Templates: `${CLAUDE_PLUGIN_ROOT}/../kdd/templates/`
 - Inbox de ideas: `specs/00-inbox/`
-- Entidades actuales: `specs/02-domain/entities/`
-- Reglas actuales: `specs/02-domain/rules/`
+- Entidades actuales: `specs/01-domain/entities/`
+- Reglas actuales: `specs/01-domain/rules/`
 
 ## Ejemplo de Uso
 

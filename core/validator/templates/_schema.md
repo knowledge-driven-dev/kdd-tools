@@ -1,68 +1,83 @@
-# Guía de Plantillas KDD
+# KDD Template Guide
 
-Este directorio contiene las plantillas canónicas para cada tipo de documento de especificación.
+This directory contains the canonical templates for each type of specification document.
 
-## Estructura de una plantilla
+## Template structure
 
-Cada plantilla usa un formato especial que permite al validador extraer:
-1. **Schema de frontmatter** - Desde el bloque YAML con anotaciones de tipo
-2. **Secciones requeridas** - Desde los headings marcados con `<!-- required -->`
-3. **Contenido esperado** - Desde bloques marcados con `<!-- expects: tipo -->`
+Each template uses a special format that allows the validator to extract:
+1. **Frontmatter schema** - From the YAML block with annotations
+2. **Required sections** - From headings marked with `<!-- required -->`
+3. **Expected content** - From blocks marked with `<!-- expects: type -->`
 
-## Convenciones de anotación
+## Annotation conventions
 
 ### Frontmatter
 
+Only 3 annotations are used:
+
 ```yaml
 ---
-# @type: use-case
-# @description: Plantilla para casos de uso
 id: UC-NNN           # @required @pattern: ^UC-\d{3}$
-version: 1           # @type: number @default: 1
-status: draft        # @enum: draft|proposed|approved|deprecated
-actor: Actor         # @required
-domain: six-hats     # @optional
-tags:                # @type: array
-  - use-case
+kind: use-case       # @required
+status: draft        # @required @enum: draft|review|approved|deprecated|superseded
+source: UC-NNN       # @pattern: ^UC-\d{3}$
 ---
 ```
 
-### Secciones
+- `@required` — field is mandatory
+- `@enum: value1|value2` — allowed values
+- `@pattern: ^REGEX$` — ID format validation
+
+### Sections
 
 ```markdown
-## Descripción <!-- required -->
+## Description <!-- required -->
 
-## Flujo Principal <!-- required alias: "Happy Path|Main Flow" -->
+## Main Flow <!-- required -->
 
-## Extensiones <!-- optional -->
+## Extensions <!-- optional -->
 ```
 
-### Contenido esperado
+### Expected content
 
 ```markdown
-## Ciclo de Vida
+## Lifecycle
 
 <!-- expects: mermaid:stateDiagram-v2 -->
 
-## Ejemplo
+## Example
 
 <!-- expects: json -->
 ```
 
-## Archivos de plantilla
+## Template files
 
-| Archivo | Tipo | Descripción |
-|---------|------|-------------|
-| `use-case.template.md` | use-case | Casos de uso (Cockburn-lite) |
-| `requirement.template.md` | requirement | Requisitos EARS |
-| `entity.template.md` | entity | Entidades del dominio |
-| `event.template.md` | event | Eventos de dominio |
-| `rule.template.md` | rule | Reglas de negocio |
-| `process.template.md` | process | Procesos (BPMN-lite) |
-| `command.template.md` | command | Comandos CQRS (modifican estado) |
-| `query.template.md` | query | Queries CQRS (solo lectura) |
+| File | Type | Description |
+|------|------|-------------|
+| `entity.template.md` | entity | Domain entities (see variants below) |
+| `event.template.md` | event | Domain events |
+| `rule.template.md` | rule | Business rules (BR), policies (BP), and cross-policies (XP) |
+| `use-case.template.md` | use-case | Use cases (Cockburn-lite) |
+| `command.template.md` | command | CQRS commands (state-changing) |
+| `query.template.md` | query | CQRS queries (read-only) |
+| `process.template.md` | process | Processes (BPMN-lite) |
+| `requirement.template.md` | requirement | EARS requirements |
 | `prd.template.md` | prd | Product Requirements Document |
-| `story.template.md` | story | Historias de usuario |
-| `nfr.template.md` | nfr | Requisitos no funcionales |
+| `nfr.template.md` | nfr | Non-functional requirements |
 | `adr.template.md` | adr | Architecture Decision Records |
-| `idea.template.md` | idea | Ideas y propuestas |
+| `value-unit.template.md` | value-unit | Value Units (end-to-end deliverables) |
+| `release.template.md` | release | Release plans (group Value Units) |
+| `implementation-charter.template.md` | implementation-charter | Tech stack and implementation guidelines |
+| `ui-view.template.md` | ui-view | Pages/screens |
+| `ui-component.template.md` | ui-component | Reusable UI components |
+| `_manifest.template.yaml` | manifest | Domain manifest (multi-domain) |
+
+### entity.template.md variants
+
+The entity template supports multiple `kind` values:
+
+| Kind | Use | Example | Naming convention |
+|------|-----|---------|-------------------|
+| `entity` | Domain entity with lifecycle | Order, Cart, Product | PascalCase: `Order.md` |
+| `role` | Role/actor that interacts with the system | Customer, Admin | PascalCase: `Customer.md` |
+| `system` | External system / integration | STRIPE, WAREHOUSE | UPPERCASE: `STRIPE.md` |

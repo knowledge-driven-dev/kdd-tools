@@ -28,8 +28,7 @@ Ejemplos:
 ---
 id: QRY-NNN                   # Obligatorio
 kind: query                   # Literal
-title: Nombre de la Query     # Obligatorio
-status: draft                 # draft|review|approved|deprecated
+status: draft                 # draft|review|approved|deprecated|superseded
 ---
 ```
 
@@ -50,13 +49,11 @@ Descripción de qué datos recupera y casos de uso principales.
 | retoId | UUID | Yes | Reto existente |
 
 ## Output
-```typescript
-interface QueryResult {
-  id: string
-  titulo: string
-  status: RetoStatus
-}
-```
+| Field | Type | Description |
+|-------|------|-------------|
+| id | string | Identificador único |
+| titulo | string | Título del recurso |
+| status | RetoStatus | Estado actual |
 
 ## Authorization
 - Usuario debe estar autenticado
@@ -117,28 +114,24 @@ interface QueryResult {
 ## Output: Patrones Comunes
 
 ### Single Entity
-```typescript
-interface GetRetoResult {
-  id: string
-  titulo: string
-  descripcion: string
-  status: RetoStatus
-  createdAt: string
-}
-```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| id | string | Identificador único |
+| titulo | string | Título del reto |
+| descripcion | string | Descripción del reto |
+| status | RetoStatus | Estado actual |
+| createdAt | string | Fecha de creación (ISO-8601) |
 
 ### Paginated List
-```typescript
-interface ListRetosResult {
-  data: RetoSummary[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
-}
-```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| data | RetoSummary[] | Lista de resultados |
+| pagination.page | number | Página actual |
+| pagination.limit | number | Resultados por página |
+| pagination.total | number | Total de resultados |
+| pagination.totalPages | number | Total de páginas |
 
 ## Errores: Convención de Códigos
 
@@ -155,7 +148,6 @@ Errores comunes:
 ---
 id: QRY-002
 kind: query
-title: Listar Retos del Usuario
 status: approved
 ---
 
@@ -174,24 +166,18 @@ con filtros opcionales por estado.
 
 ## Output
 
-```typescript
-interface ListRetosResult {
-  data: {
-    id: string
-    titulo: string
-    status: RetoStatus
-    personasCount: number
-    sesionesCount: number
-    createdAt: string
-  }[]
-  pagination: {
-    page: number
-    limit: number
-    total: number
-    totalPages: number
-  }
-}
-```
+| Field | Type | Description |
+|-------|------|-------------|
+| data[].id | string | Identificador del reto |
+| data[].titulo | string | Título del reto |
+| data[].status | RetoStatus | Estado actual |
+| data[].personasCount | number | Cantidad de personas |
+| data[].sesionesCount | number | Cantidad de sesiones |
+| data[].createdAt | string | Fecha de creación (ISO-8601) |
+| pagination.page | number | Página actual |
+| pagination.limit | number | Resultados por página |
+| pagination.total | number | Total de resultados |
+| pagination.totalPages | number | Total de páginas |
 
 ## Filters
 

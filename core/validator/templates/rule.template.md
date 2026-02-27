@@ -1,34 +1,51 @@
 ---
-# @type: rule
-# @description: Regla de negocio (Business Rule BR-* o Business Policy BP-*)
-# @file-pattern: ^(BR|BP)-[A-Z]+-\d{3}\.md$
-# @path-pattern: domain/rules/
+# @file-pattern: ^(BR|BP|XP)-\d{3}-.+\.md$
+# @path-pattern: 01-domain/rules/ (BR), 02-behavior/policies/ (BP, XP)
 
-id: BR-ENTITY-NNN             # @required @pattern: ^(BR|BP)-[A-Z]+-\d{3}$
-title: Rule Title             # @required
-type: business-rule           # @enum: business-rule|business-policy
-entity: EntityName            # @required - Entidad principal afectada
-category: validation          # @enum: validation|limit|state|security|business|policy|data
-severity: critical            # @enum: critical|high|medium|low
-status: draft                 # @enum: draft|review|approved|deprecated @default: draft
-owner: "@team"                # @optional
-created: "2024-01-01"         # @optional
-tags:                         # @type: array
-  - rule
+id: BR-NNN-{Name}             # @required @pattern: ^(BR|BP|XP)-\d{3}$
+kind: business-rule           # @required @enum: business-rule|business-policy|cross-policy
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
 ---
 
-# BR-ENTITY-NNN: RuleTitle <!-- required pattern: ^(BR|BP)-[A-Z]+-\d{3}: -->
+<!--
+  KIND VARIANTS — when to use each prefix:
 
-## Declaración <!-- required -->
+  BR (Business Rule)    → Structural constraint on a domain entity.
+                          Invariant that must always hold. Lives in 01-domain/rules/.
+                          Example: "An Order title must be 1-100 characters."
 
-Clear statement of the business rule in natural language. This should be understandable by non-technical stakeholders.
+  BP (Business Policy)  → Configurable behavior tied to a specific entity or process.
+                          Has parameters that can change. Lives in 02-behavior/policies/.
+                          Example: "Session timeout after 30 minutes of inactivity."
 
-## Entidades Relacionadas <!-- required -->
+  XP (Cross-Policy)     → Cross-cutting behavior that applies transversally to multiple
+                          commands/queries. Uses BEFORE/AFTER pattern. Lives in 02-behavior/policies/.
+                          Example: "All billable commands must verify credit balance before execution."
+-->
 
-- [[Entity1]] - How this entity is affected
-- [[Entity2]] - Role in this rule
+# BR-NNN-Name: RuleTitle <!-- required pattern: ^(BR|BP|XP)-\d{3}-[A-Za-z]+: -->
 
-## Formalización EARS <!-- required -->
+## Statement <!-- required -->
+
+Clear statement of the rule in natural language, understandable by non-technical stakeholders. Affected domain entities should be mentioned with wiki-links: [[Entity1]], [[Entity2]].
+
+## Rationale <!-- required -->
+
+Brief business reason. Explains the risk it prevents or the benefit it protects.
+
+## When Applies <!-- required -->
+
+Indicates at which points in the entity lifecycle the rule is evaluated (create, modify, state change).
+
+## Violation Behavior <!-- required -->
+
+Expected outcome when the rule fails. Example: user-visible error, blocked operation, disallowed state.
+
+## Parameters (BP only) <!-- optional -->
+
+If this is a Business Policy, list configurable parameters and their default values.
+
+## Formalization <!-- optional -->
 
 ```
 IF/WHEN/WHILE [condition],
@@ -37,32 +54,41 @@ the system SHALL [action]
   AND SHALL NOT [prohibited action].
 ```
 
-## Ejemplos <!-- required -->
+## EARS Formalization (XP only) <!-- optional -->
 
-### Casos Válidos
-- ✓ Example of valid scenario
-- ✓ Another valid scenario
+```
+BEFORE executing any command with {attribute}={value},
+the system SHALL {verification}
+  AND SHALL {action if OK}
+  AND SHALL reject with error "{ERROR_CODE}" if {rejection condition}.
 
-### Casos Inválidos
-- ✗ Example of invalid scenario → expected behavior
-- ✗ Another invalid scenario → expected behavior
+AFTER a command completes successfully,
+the system SHALL {post-success action}.
 
-## Casos de Uso Relacionados <!-- optional -->
-
-- [[UC-NNN-UseCaseName]]
-- [[CMD-NNN-CommandName]]
-
-## Implementación <!-- optional -->
-
-```typescript
-// Suggested implementation approach
-function validateRule(input: Input): void {
-  if (!condition) {
-    throw new BusinessRuleError('BR-ENTITY-NNN', 'Error message')
-  }
-}
+AFTER a command fails,
+the system SHALL {post-failure action}.
 ```
 
-## Notas <!-- optional -->
+## Standard Behavior (XP only) <!-- optional -->
 
-Additional context, edge cases, or implementation considerations.
+### Verification (BEFORE)
+What is verified before executing the command.
+
+### Success (AFTER)
+What happens after the command completes successfully.
+
+### Rejection
+What happens if verification fails. Include error code and standard message.
+
+### Rollback
+What happens if the command fails after passing verification.
+
+## Examples <!-- required -->
+
+### Valid Cases
+- Example of valid scenario
+- Another valid scenario
+
+### Invalid Cases
+- Example of invalid scenario → expected behavior
+- Another invalid scenario → expected behavior

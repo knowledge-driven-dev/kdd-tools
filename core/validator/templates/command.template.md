@@ -1,17 +1,10 @@
 ---
-# @type: command
-# @description: Comando del sistema (CQRS - operación que modifica estado)
 # @file-pattern: ^CMD-\d{3}-.+\.md$
-# @path-pattern: capabilities/commands/
+# @path-pattern: 02-behavior/commands/
 
 id: CMD-NNN                   # @required @pattern: ^CMD-\d{3}$
-title: Command Name           # @required
-type: command                 # @literal: command
-status: draft                 # @enum: draft|review|approved|deprecated @default: draft
-owner: "@team"                # @optional
-created: "2024-01-01"          # @optional
-tags:                         # @type: array
-  - command
+kind: command                 # @required
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
 ---
 
 # CMD-NNN: CommandName <!-- required pattern: ^CMD-\d{3}: -->
@@ -39,12 +32,15 @@ Brief description of what this command does and why it exists.
 - Entities created/modified/deleted
 - Side effects (emails, notifications, etc.)
 
+State transitions (if applicable):
+- [[Entity]] `state_a` → `state_b`
+
 ## Rules Validated <!-- optional -->
 
-- [[BR-XXX-001]] - Rule description
-- [[BR-YYY-002]] - Another rule
+- [[BR-001-RuleName]] - Rule description
+- [[BR-002-RuleName]] - Another rule
 
-## Events Generated <!-- optional -->
+## Events <!-- optional -->
 
 - `EventName` on success:
   ```yaml
@@ -59,36 +55,3 @@ Brief description of what this command does and why it exists.
 |------|-----------|---------|
 | ERR-001 | Error condition | "User-facing error message" |
 | ERR-002 | Another condition | "Another error message" |
-
-
-
-```typescript
-// File path suggestion
-// apps/api/src/application/use-cases/command-name.use-case.ts
-
-export const commandNameSchema = z.object({
-  param: z.string(),
-})
-
-async function execute(input: CommandInput): Promise<CommandResult> {
-  // Validation
-  // Business logic
-  // Persistence
-  // Events
-}
-```
-
-## State Transitions <!-- optional -->
-
-```
-Entity [state_a] → [state_b]
-```
-
-
-
-## Performance Requirements <!-- optional -->
-
-| Metric | Target |
-|--------|--------|
-| Latency | < X seconds |
-| Timeout | Y seconds |

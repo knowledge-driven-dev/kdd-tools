@@ -68,18 +68,18 @@ Lee el archivo `${CLAUDE_PLUGIN_ROOT}/../kdd/kdd.md` para entender la estructura
 | Evento | EVT-X | Crear |
 | Regla | BR-X | Crear |
 
-### Capacidades (03-capabilities/)
+### Comportamiento (02-behavior/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
 | Comando | CMD-X | Crear |
+| Caso de Uso | UC-XXX-X | Crear |
 
-### Interacción (04-interaction/)
+### Experiencia (03-experience/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
-| Caso de Uso | UC-XXX-X | Crear |
 | Vista | UI-X | Crear/Modificar |
 
-### Verificación (05-verification/)
+### Verificación (04-verification/)
 | Tipo | Artefacto | Acción |
 |------|-----------|--------|
 | Criterios | REQ-XXX-X | Crear |

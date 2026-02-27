@@ -40,10 +40,12 @@ Identifica:
 
 Busca en las capas KDD:
 ```
-specs/01-domain/     → entidades, reglas, eventos
-specs/02-behavior/ → comandos, queries, procesos
-specs/03-experience/ → casos de uso, vistas, flows
-specs/04-verification/ → criterios de aceptación
+specs/00-requirements/ → PRD, objectives (OBJ-*), value-units (UV-*), releases (REL-*)
+specs/01-domain/       → entidades, reglas (BR-NNN-{Name}), eventos
+specs/02-behavior/     → comandos, queries, procesos, use-cases (UC-*), políticas (BP-*, XP-*)
+specs/03-experience/   → vistas (UI-*), componentes
+specs/04-verification/ → requisitos verificables (REQ-*), ejemplos (.feature)
+specs/05-architecture/ → ADRs (decisions/), charter
 ```
 
 ### Fase 3: Evaluar Impacto
@@ -60,7 +62,7 @@ Presenta al usuario:
 | Artefacto | Tipo de Cambio | Impacto |
 |-----------|----------------|---------|
 | [[Reto]] | Modificar atributo | Bajo |
-| [[BR-RETO-002]] | Actualizar condición | Medio |
+| [[BR-002-RetoMaxLength]] | Actualizar condición | Medio |
 
 ### Artefactos con Impacto en Cascada
 | Artefacto | Razón | Acción Sugerida |

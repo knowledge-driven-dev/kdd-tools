@@ -13,7 +13,7 @@ paths:
 ```
 specs/
 ├── _shared/                    # Elementos transversales
-│   ├── policies/               # XP-* Políticas cross-domain
+│   ├── policies/               # XP-NNN-{Name} Cross-domain policies
 │   ├── glossary.md             # Términos globales
 │   ├── domain-map.md           # Mapa de dominios
 │   └── nfr/                    # NFRs globales
@@ -114,51 +114,80 @@ boundaries:
 [[billing::Credito]]
 
 # Elemento compartido
-[[_shared::XP-AUDIT-001]]
+[[_shared::XP-002-Audit]]
 ```
 
 ## Políticas Compartidas (`_shared/policies/`)
 
-### Nombrado
+### Naming
 
-Patrón: `XP-NOMBRE-NNN.md` (Cross-Policy)
+Pattern: `XP-NNN-{Name}.md` (Cross-Policy)
 
-Ejemplos:
-- `XP-LOGGING-001.md`
-- `XP-AUDIT-001.md`
-- `XP-SECURITY-001.md`
+Examples:
+- `XP-001-Logging.md`
+- `XP-002-Audit.md`
+- `XP-003-Security.md`
 
-### Estructura
+### Structure
 
 ```markdown
 ---
-id: XP-LOGGING-001
+id: XP-001-Logging
 kind: cross-policy
-title: Política de Logging
-scope: all-domains
 status: approved
 ---
 
-# XP-LOGGING-001: Política de Logging
-
-## Scope
-
-Aplica a TODOS los dominios.
+# XP-001-Logging: Logging Policy
 
 ## Statement
 
-Todo comando y query debe loguear entrada y salida con correlation ID.
+Every command and query must log entry and exit with a correlation ID.
 
-## Requirements
+## Rationale
 
-1. Log level INFO para operaciones exitosas
-2. Log level ERROR para fallos
-3. Incluir `correlationId` en todos los logs
-4. No loguear datos sensibles (passwords, tokens)
+Correlation IDs enable end-to-end tracing across services and domains,
+which is essential for debugging, auditing, and observability.
 
-## Compliance
+## When Applies
 
-Verificado por: hook pre-commit, auditoría mensual
+Applies to ALL domains, for every command handler and query handler.
+
+## Violation Behavior
+
+WHEN a command or query handler does not include a `correlationId`
+in its log output, the Sistema SHALL reject the deployment
+AND SHALL report a compliance violation.
+
+## EARS Formalization
+
+WHEN a command or query is executed,
+the Sistema SHALL log entry and exit at INFO level
+  AND SHALL include `correlationId` in every log entry
+  AND SHALL NOT log sensitive data (passwords, tokens).
+
+WHEN a command or query fails,
+the Sistema SHALL log at ERROR level
+  AND SHALL include `correlationId` and error details.
+
+## Standard Behavior
+
+1. Log level INFO for successful operations
+2. Log level ERROR for failures
+3. Include `correlationId` in all log entries
+4. Never log sensitive data (passwords, tokens)
+
+## Examples
+
+**Correct:**
+```json
+{ "level": "INFO", "correlationId": "abc-123", "msg": "CMD-CreateSession started" }
+```
+
+**Incorrect:**
+```json
+{ "level": "INFO", "msg": "session started" }
+```
+(Missing `correlationId`)
 ```
 
 ## Domain Map (`_shared/domain-map.md`)

@@ -9,43 +9,54 @@ Detecta violaciones del principio de dependencias entre capas de KDD en las espe
 ## Principio de Dependencias
 
 ```
-┌─────────────────────────────────────────┐
-│  05-verification   (REQ, *.feature)     │  ← puede referenciar todo
-├─────────────────────────────────────────┤
-│  04-interaction    (UC, UI, Flow)       │  ← puede referenciar 03, 02, 01
-├─────────────────────────────────────────┤
-│  03-capabilities   (CMD, QRY, PROC)     │  ← puede referenciar 02, 01
-├─────────────────────────────────────────┤
-│  02-domain         (Entity, EVT, BR/BP) │  ← solo puede referenciar 01
-├─────────────────────────────────────────┤
-│  01-problem        (PRD, ADR)           │  ← no referencia nada
-└─────────────────────────────────────────┘
+  ┌──────────────────────────────────────────────────────────┐
+  │  05-architecture  (ADR, ARCH-CHARTER)  │  ORTOGONAL      │
+  └──────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────┐
+  │  04-verification  (REQ, VER, *.feature)                  │  ← puede referenciar 03, 02, 01
+  ├──────────────────────────────────────────────────────────┤
+  │  03-experience    (UI-*, componentes)                    │  ← puede referenciar 02, 01
+  ├──────────────────────────────────────────────────────────┤
+  │  02-behavior      (CMD, QRY, PROC, BP, XP, UC)          │  ← puede referenciar 01
+  ├──────────────────────────────────────────────────────────┤
+  │  01-domain        (Entidades, EVT, BR)                   │  ← BASE, no referencia nada
+  └──────────────────────────────────────────────────────────┘
+
+  ┌──────────────────────────────────────────────────────────┐
+  │  00-requirements  (PRD, OBJ, UV, REL, NFR)  │  INPUT     │
+  └──────────────────────────────────────────────────────────┘
 ```
 
-**Regla**: Las capas inferiores NO pueden referenciar capas superiores.
+**Regla de flujo**: `04 → 03 → 02 → 01` (capas superiores pueden referenciar inferiores, NO al revés).
+- `00-requirements` es INPUT: alimenta el diseño pero está fuera del flujo de dependencias.
+- `05-architecture` es ORTOGONAL: puede ser referenciada desde cualquier capa y puede referenciar cualquier capa.
 
 ## Instrucciones
 
 1. **Escanea** los archivos en `specs/` (o el path en `$ARGUMENTS` si se proporciona)
 
 2. **Para cada archivo**, determina su capa según ubicación y prefijo:
-   | Capa | Ubicación | Prefijos |
-   |------|-----------|----------|
-   | 01-problem | `01-problem/` | PRD, ADR |
-   | 02-domain | `02-domain/` | (entidades), EVT, BR, BP |
-   | 03-capabilities | `03-capabilities/` | CMD, QRY, PROC |
-   | 04-interaction | `04-interaction/` | UC, UI, Flow |
-   | 05-verification | `05-verification/` | REQ, *.feature |
+   | Capa | Ubicación | Prefijos | Rol |
+   |------|-----------|----------|-----|
+   | 00-requirements | `00-requirements/` | PRD-, OBJ-, UV-, REL-, NFR- | INPUT |
+   | 01-domain | `01-domain/` | Entidades (PascalCase), EVT-, BR- | BASE |
+   | 02-behavior | `02-behavior/` | CMD-, QRY-, PROC-, BP-, XP-, UC- | |
+   | 03-experience | `03-experience/` | UI-*, componentes | |
+   | 04-verification | `04-verification/` | REQ-, VER-, *.feature | |
+   | 05-architecture | `05-architecture/` | ADR-, ARCH-CHARTER- | ORTOGONAL |
 
 3. **Detecta violaciones** buscando wiki-links `[[...]]` que referencien capas superiores:
 
    ### Violaciones por Capa
 
-   | Si estás en... | NO puedes referenciar... |
-   |----------------|--------------------------|
-   | 02-domain | CMD-*, QRY-*, PROC-*, UC-*, UI-*, Flow-*, REQ-* |
-   | 03-capabilities | UC-*, UI-*, Flow-*, REQ-* |
-   | 04-interaction | REQ-* |
+   | Si estás en... | NO puedes referenciar... | Notas |
+   |----------------|--------------------------|-------|
+   | 01-domain | CMD-*, QRY-*, PROC-*, BP-*, XP-*, UC-*, UI-*, REQ-*, VER-* | BASE: no referencia nada |
+   | 02-behavior | UI-*, REQ-*, VER-* | Solo puede referenciar 01-domain |
+   | 03-experience | REQ-*, VER-* | Solo puede referenciar 02, 01 |
+   | 00-requirements | (sin restricciones de dependencia) | INPUT: fuera del flujo |
+   | 05-architecture | (sin restricciones de dependencia) | ORTOGONAL |
 
 4. **Detecta anti-patrones de UI en dominio**:
    - Mensajes literales en EARS: `display message`, `show`, `mostrar mensaje`
@@ -71,13 +82,13 @@ Detecta violaciones del principio de dependencias entre capas de KDD en las espe
 ### 🔴 specs/01-domain/rules/BR-XXX.md
 | Línea | Problema | Referencia | Capa Destino |
 |-------|----------|------------|--------------|
-| 45 | Link a capa superior | [[CMD-001-...]] | 03-capabilities |
+| 45 | Link a capa superior | [[CMD-001-...]] | 02-behavior |
 | 52 | Sección prohibida | "Casos de Uso Relacionados" | - |
 
 ### 🔴 specs/01-domain/rules/BR-YYY.md
 | Línea | Problema | Referencia | Capa Destino |
 |-------|----------|------------|--------------|
-| 33 | UI en EARS | `display message "..."` | 04-interaction |
+| 33 | UI en EARS | `display message "..."` | 03-experience |
 
 ## Anti-patrones Detectados
 
@@ -89,6 +100,7 @@ Detecta violaciones del principio de dependencias entre capas de KDD en las espe
 ## Archivos Limpios ✅
 - specs/01-domain/entities/Reto.md
 - specs/01-domain/rules/BR-RETO-001.md
+- specs/02-behavior/commands/CMD-001-CreateChallenge.md
 - ...
 ```
 
@@ -99,7 +111,10 @@ Detecta violaciones del principio de dependencias entre capas de KDD en las espe
 /kdd:validate-deps
 
 # Validar solo dominio
-/kdd:validate-deps specs/02-domain
+/kdd:validate-deps specs/01-domain
+
+# Validar solo behavior
+/kdd:validate-deps specs/02-behavior
 
 # Validar archivo específico
 /kdd:validate-deps specs/01-domain/rules/BR-RETO-002.md

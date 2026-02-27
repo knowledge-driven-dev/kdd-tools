@@ -32,13 +32,20 @@ export type DocType =
   | 'entity'
   | 'event'
   | 'rule'
+  | 'business-policy'
+  | 'cross-policy'
   | 'process'
   | 'command'
   | 'query'
   | 'prd'
-  | 'story'
   | 'nfr'
   | 'adr'
+  | 'objective'
+  | 'value-unit'
+  | 'release'
+  | 'implementation-charter'
+  | 'ui-view'
+  | 'ui-component'
   | 'unknown'
 
 export interface ValidationResult {
@@ -95,7 +102,6 @@ function extractHeadings(
   content: string
 ): { level: number; text: string; line: number }[] {
   const headings: { level: number; text: string; line: number }[] = []
-  const lines = content.split('\n')
 
   function visit(node: Content) {
     if (node.type === 'heading') {
@@ -168,18 +174,28 @@ function inferDocType(filePath: string, frontmatter: Record<string, unknown>): D
   // Excluir archivos de índice generados automáticamente
   if (fileName.startsWith('_')) return 'unknown'
 
-  // Por type explícito (nuevo formato CQRS)
-  const type = frontmatter.type as string | undefined
-  if (type === 'command') return 'command'
-  if (type === 'query') return 'query'
-
-  // Por kind explícito
+  // Por kind explícito (v2.0 primary mechanism)
   if (kind) {
     switch (kind) {
+      case 'use-case':
       case 'use_case':
         return 'use-case'
+      case 'requirement':
       case 'requirements':
         return 'requirement'
+      case 'entity':
+      case 'role':
+      case 'system':
+      case 'catalog':
+        return 'entity'
+      case 'event':
+        return 'event'
+      case 'business-rule':
+        return 'rule'
+      case 'business-policy':
+        return 'business-policy'
+      case 'cross-policy':
+        return 'cross-policy'
       case 'rule':
       case 'rules':
         return 'rule'
@@ -191,16 +207,31 @@ function inferDocType(filePath: string, frontmatter: Record<string, unknown>): D
         return 'query'
       case 'prd':
         return 'prd'
-      case 'story':
-        return 'story'
       case 'nfr':
         return 'nfr'
       case 'adr':
         return 'adr'
+      case 'objective':
+        return 'objective'
+      case 'value-unit':
+        return 'value-unit'
+      case 'release':
+        return 'release'
+      case 'implementation-charter':
+        return 'implementation-charter'
+      case 'ui-view':
+        return 'ui-view'
+      case 'ui-component':
+        return 'ui-component'
     }
   }
 
-  // Por tags
+  // Por type explícito (legacy CQRS format)
+  const type = frontmatter.type as string | undefined
+  if (type === 'command') return 'command'
+  if (type === 'query') return 'query'
+
+  // Por tags (legacy, kept for backwards compat)
   if (tags.includes('entity')) return 'entity'
   if (tags.includes('event')) return 'event'
   if (tags.includes('use-case')) return 'use-case'
@@ -213,24 +244,34 @@ function inferDocType(filePath: string, frontmatter: Record<string, unknown>): D
   if (fileName.startsWith('UC-')) return 'use-case'
   if (fileName.startsWith('REQ-')) return 'requirement'
   if (fileName.startsWith('EVT-')) return 'event'
-  if (fileName.startsWith('BR-') || fileName.startsWith('BP-')) return 'rule'
-  if (fileName.startsWith('PRC-') || fileName.startsWith('PROC-')) return 'process'
+  if (fileName.startsWith('BR-')) return 'rule'
+  if (fileName.startsWith('BP-')) return 'business-policy'
+  if (fileName.startsWith('XP-')) return 'cross-policy'
+  if (fileName.startsWith('PROC-')) return 'process'
   if (fileName.startsWith('CMD-')) return 'command'
   if (fileName.startsWith('QRY-')) return 'query'
   if (fileName.startsWith('PRD-')) return 'prd'
-  if (fileName.startsWith('US-') || fileName.startsWith('STORY-')) return 'story'
   if (fileName.startsWith('NFR-')) return 'nfr'
   if (fileName.startsWith('ADR-')) return 'adr'
+  if (fileName.startsWith('OBJ-')) return 'objective'
+  if (fileName.startsWith('UV-')) return 'value-unit'
+  if (fileName.startsWith('REL-')) return 'release'
 
   // Por id en frontmatter
   if (id) {
     if (id.startsWith('UC-')) return 'use-case'
     if (id.startsWith('REQ-')) return 'requirement'
     if (id.startsWith('EVT-')) return 'event'
-    if (id.startsWith('BR-') || id.startsWith('BP-')) return 'rule'
-    if (id.startsWith('PRC-') || id.startsWith('PROC-')) return 'process'
+    if (id.startsWith('BR-')) return 'rule'
+    if (id.startsWith('BP-')) return 'business-policy'
+    if (id.startsWith('XP-')) return 'cross-policy'
+    if (id.startsWith('PROC-')) return 'process'
     if (id.startsWith('CMD-')) return 'command'
     if (id.startsWith('QRY-')) return 'query'
+    if (id.startsWith('OBJ-')) return 'objective'
+    if (id.startsWith('UV-')) return 'value-unit'
+    if (id.startsWith('REL-')) return 'release'
+    if (id.startsWith('ARCH-CHARTER')) return 'implementation-charter'
   }
 
   // Por path
@@ -239,9 +280,15 @@ function inferDocType(filePath: string, frontmatter: Record<string, unknown>): D
   if (filePath.includes('/entities/')) return 'entity'
   if (filePath.includes('/events/')) return 'event'
   if (filePath.includes('/rules/')) return 'rule'
+  if (filePath.includes('/policies/')) return 'business-policy'
   if (filePath.includes('/processes/')) return 'process'
   if (filePath.includes('/commands/')) return 'command'
   if (filePath.includes('/queries/')) return 'query'
+  if (filePath.includes('/objectives/')) return 'objective'
+  if (filePath.includes('/value-units/')) return 'value-unit'
+  if (filePath.includes('/releases/')) return 'release'
+  if (filePath.includes('/views/')) return 'ui-view'
+  if (filePath.includes('/components/')) return 'ui-component'
 
   return 'unknown'
 }

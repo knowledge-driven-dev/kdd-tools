@@ -250,7 +250,7 @@ function validateCrossReferences(spec: SpecFile, entityIndex: EntityIndex): Vali
   }
 
   // Para cualquier documento: verificar reglas mencionadas
-  const ruleMentions = spec.content.match(/BR-[A-Z]+-\d{3}/g) ?? []
+  const ruleMentions = spec.content.match(/(?:BR|BP|XP)-\d{3}/g) ?? []
   for (const rule of [...new Set(ruleMentions)]) {
     const entity = findEntity(entityIndex, rule)
     if (!entity) {

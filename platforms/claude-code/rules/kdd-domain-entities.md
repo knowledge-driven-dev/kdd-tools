@@ -14,16 +14,27 @@ paths:
 |------|-----|------------------|
 | `entity` | Entidad de dominio (Reto, Sesión, Plan) | `NombreEntidad.md` |
 | `role` | Rol de usuario (Propietario, Moderador) | `NombreRol.md` |
-| `actor` | Actor externo (Usuario, Administrador) | `NombreActor.md` |
 | `system` | Sistema externo | `ORACLE.md` (MAYÚSCULAS) |
+| `catalog` | Catálogo de valores (Monedas, Países) | `NombreCatalogo.md` |
 
 ## Frontmatter Requerido
 
 ```yaml
 ---
-kind: entity                  # entity|role|actor|system
+kind: entity                  # entity|role|system|catalog
 aliases:                      # Nombres alternativos (opcional)
   - NombreAlternativo
+---
+```
+
+### Catalog-specific Fields (optional, only for `kind: catalog`)
+
+```yaml
+---
+kind: catalog
+source: "ERP"                 # Origin system or authority
+scope: global                 # global|tenant|region
+change-frequency: low         # low|medium|high
 ---
 ```
 

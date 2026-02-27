@@ -22,15 +22,7 @@ Ejemplos:
 ```yaml
 ---
 kind: ui-view
-status: draft
-version: "1.0"
-links:
-  entities: []              # Entidades de dominio usadas
-  use-cases: []             # Casos de uso implementados
-  components: []            # Componentes que usa
-storybook:
-  category: "Views"
-  auto-generate: true
+status: draft                 # draft | review | approved | deprecated | superseded
 ---
 ```
 
@@ -41,10 +33,10 @@ storybook:
 ```markdown
 # View: NombreVista
 
-## Description
+## Purpose
 Propósito de la vista. ¿Qué objetivo del usuario cumple?
 
-## Navigation Context
+## Navigation
 - **Route**: `/path/to/view`
 - **Access from**: De dónde llega el usuario
 - **Navigation to**: A dónde puede ir
@@ -72,7 +64,7 @@ Propósito de la vista. ¿Qué objetivo del usuario cumple?
 |-----------|----------|------------|
 | [[UI-Header]] | Top | `title`, `showBack` |
 
-## Data Requirements
+## Data
 
 ### Entities
 | Entity | Fields used | How to obtain |
@@ -90,11 +82,6 @@ Propósito de la vista. ¿Qué objetivo del usuario cumple?
 ### Error
 ### Success / Default
 
-## Main Wireframe
-```ascii
-[Wireframe principal en ASCII]
-```
-
 ## Behavior
 
 ### On Load
@@ -107,14 +94,6 @@ Propósito de la vista. ¿Qué objetivo del usuario cumple?
 | User Action | Result | Feedback |
 |-------------|--------|----------|
 | Click "Save" | Envía datos | Toast success/error |
-
-## Accessibility
-- **Initial focus**: Primer campo
-- **Tab order**: Header → Content → Actions
-- **Keyboard shortcuts**: Ctrl+S = Save
-
-## Related Use Cases
-- [[UC-001-Crear-Reto]]
 ```
 
 ## Wireframes ASCII
@@ -167,19 +146,14 @@ Propósito de la vista. ¿Qué objetivo del usuario cumple?
 ---
 kind: ui-view
 status: draft
-version: "1.0"
-links:
-  entities: [Reto]
-  use-cases: [UC-001]
-  components: [UI-RetoForm]
 ---
 
 # View: NewChallenge
 
-## Description
+## Purpose
 Permite al [[Usuario]] crear un nuevo [[Reto]] ingresando título y descripción.
 
-## Navigation Context
+## Navigation
 - **Route**: `/retos/nuevo`
 - **Access from**: Dashboard, botón "Nuevo Reto"
 - **Navigation to**: VIEW-ConfigureChallenge (on success)

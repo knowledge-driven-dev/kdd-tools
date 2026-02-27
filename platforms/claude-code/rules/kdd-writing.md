@@ -2,7 +2,12 @@
 
 > Esta rule se aplica siempre que trabajes con especificaciones en `/specs`.
 
-## Filosofía: Documentación Fluida
+## Language Policy
+
+- **Headings** must be written in **English** (e.g., `## Statement`, `## Rationale`).
+- Body text may be in the project's primary language (e.g., Spanish), but section headings follow the KDD v2.0 English template.
+
+## Philosophy: Fluid Documentation
 
 Prioriza **legibilidad humana** sobre estructura pseudo-código:
 
@@ -35,16 +40,21 @@ Prioriza **legibilidad humana** sobre estructura pseudo-código:
 
 ## Identificadores
 
-| Tipo | Patrón | Ejemplo |
-|------|--------|---------|
+| Type | Pattern | Example |
+|------|---------|---------|
 | Use Case | `UC-NNN` | UC-001, UC-012 |
 | Requirement | `REQ-NNN` / `REQ-NNN.M` | REQ-001, REQ-001.2 |
 | Event | `EVT-Entidad-Accion` | EVT-Reto-Creado |
-| Business Rule | `BR-ENTIDAD-NNN` | BR-RONDA-003 |
-| Process | `PRC-NNN` | PRC-001 |
+| Business Rule | `BR-NNN-{Name}` | BR-001-RoundLimit |
+| Process | `PROC-NNN` | PROC-001 |
+| Objective | `OBJ-NNN` | OBJ-001 |
+| User Value | `UV-NNN` | UV-001 |
+| Relationship | `REL-NNN` | REL-001 |
+| Cross-Policy | `XP-NNN-{Name}` | XP-001-Logging |
+| Best Practice | `BP-NNN` | BP-001 |
 | ADR | `ADR-NNNN` | ADR-0001 |
 
-Los identificadores siempre van en MAYÚSCULAS y pueden enlazarse: `[[UC-001-Crear-Reto]]`
+Identifiers are always UPPERCASE and can be wiki-linked: `[[UC-001-Create-Challenge]]`
 
 ## Voz Activa
 
@@ -91,16 +101,20 @@ Documentar en sección **Estados** separada, no inline en Atributos:
 
 ## Frontmatter YAML
 
-Orden de campos:
+Field order (minimal frontmatter only):
 ```yaml
 ---
-id: UC-001                    # Identificador primero
-kind: use-case                # Tipo de documento
-status: draft                 # Estado
-actor: Usuario                # Campos específicos
-tags: [core, reto]            # Metadatos al final
+id: UC-001                    # Identifier first
+kind: use-case                # Document type
+status: draft                 # Lifecycle status
 ---
 ```
+
+### Status Lifecycle
+
+`draft` --> `review` --> `approved` --> `deprecated` --> `superseded`
+
+> A `superseded` artifact has been replaced by a newer version. It should include a reference to its successor.
 
 ## Bloques de Código
 

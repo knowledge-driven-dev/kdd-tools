@@ -1,119 +1,76 @@
 ---
-# @type: use-case
-# @description: Caso de uso siguiendo formato Cockburn-lite
 # @file-pattern: ^UC-\d{3}-.+\.md$
-# @path-pattern: behavior/use-cases/
+# @path-pattern: 02-behavior/use-cases/
 
 id: UC-NNN                    # @required @pattern: ^UC-\d{3}$
-version: 1                    # @type: number @default: 1
-status: draft                 # @enum: draft|proposed|approved|deprecated @default: draft
-actor: Actor Principal        # @required @description: Actor principal del caso de uso
-domain: six-hats              # @optional
-tags:                         # @type: array @contains: use-case
-  - use-case
+kind: use-case                # @required
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
 ---
 
-# UC-NNN: Título del Caso de Uso <!-- required pattern: ^UC-\d{3}:\s+.+ -->
+# UC-NNN: Use Case Title <!-- required pattern: ^UC-\d{3}:\s+.+ -->
 
-## Descripción <!-- required -->
+## Description <!-- required -->
 
-Descripción clara del caso de uso. Explica el objetivo principal y el valor que aporta.
+Clear description of the use case. Explain the main objective and the value it provides.
 
-## Actores <!-- required alias: Actor|Actors -->
+## Actors <!-- required -->
 
-- **Actor Principal**: [[Actor]] - Rol y motivación
-- **Actor Secundario**: Sistema/Otro actor (opcional)
+- **Primary Actor**: [[Actor]] - Role and motivation
+- **Secondary Actor**: System/Other actor (optional)
 
-## Disparadores <!-- optional alias: Trigger|Triggers -->
+## Preconditions <!-- required -->
 
-- Acción o evento que inicia el caso de uso
-- Puede haber múltiples disparadores
+1. Condition that must be met before starting
+2. Initial state of the system
 
-## Precondiciones <!-- required alias: Preconditions -->
+Triggers:
+- Action or event that initiates the use case
 
-1. Condición que debe cumplirse antes de iniciar
-2. Estado inicial del sistema
+## Main Flow (Happy Path) <!-- required -->
 
-## Flujo Principal (Happy Path) <!-- required alias: Flujo Principal|Happy Path|Main Flow -->
+1. The Actor performs the first action
+2. The System responds
+3. The Actor continues...
+4. The System **validates** the data
+5. The System **persists** the changes
+6. The System **emits** event [[EVT-Something-Happened]]
+7. The System shows confirmation to the Actor
 
-1. El Actor realiza la primera acción
-2. El Sistema responde
-3. El Actor continúa...
-4. El Sistema **valida** los datos
-5. El Sistema **persiste** los cambios
-6. El Sistema **emite** evento [[EVT-Algo-Ocurrió]]
-7. El Sistema muestra confirmación al Actor
+## Extensions / Alternative Flows <!-- optional -->
 
-## Extensiones / Flujos Alternativos <!-- optional alias: Extensiones|Extensions|Alternative Flows -->
+### Na. Extension description
 
-### Na. Descripción de la extensión
+1. Condition that triggers the extension
+2. Alternative steps
+3. Return to main flow or end
 
-1. Condición que dispara la extensión
-2. Pasos alternativos
-3. Retorno al flujo principal o fin
-
-### Nb. Otra extensión
+### Nb. Another extension
 
 1. ...
 
-## Garantías Mínimas <!-- optional alias: Minimal Guarantees -->
+## Postconditions <!-- required -->
 
-- Garantía que se cumple incluso si el caso de uso falla
-- El sistema no queda en estado inconsistente
+### On Success
 
-## Postcondiciones <!-- required alias: Postconditions -->
+- Final state of the system after success
+- Entities created/modified
+- Events emitted
 
-### En caso de éxito (Garantías de Éxito)
+**Affected entities detail:**
 
-- Estado final del sistema tras éxito
-- Entidades creadas/modificadas
-- Eventos emitidos
+- There exists an [[Entity]] with:
+  - `attribute`: expected value
+  - `status`: new status
 
-**Detalle de entidades afectadas:**
+### On Failure
 
-- Existe una [[Entidad]] con:
-  - `atributo`: valor esperado
-  - `estado`: nuevo estado
+- State if the use case fails
+- Rollback applied
+- Logging performed
 
-### En caso de fallo
+## Business Rules <!-- optional -->
 
-- Estado si el caso de uso falla
-- Rollback aplicado
-- Logging realizado
-
-## Reglas de Negocio Aplicables <!-- optional alias: Business Rules -->
-
-| Regla | Descripción |
-|-------|-------------|
-| [[BR-XXX-001]] | Descripción breve |
-| [[BR-XXX-002]] | Descripción breve |
-
-## Requisitos No Funcionales <!-- optional alias: NFRs -->
-
-- **Rendimiento**: Tiempo máximo de respuesta
-- **Disponibilidad**: Comportamiento offline si aplica
-- **Accesibilidad**: Requisitos de accesibilidad
-
-## Escenarios de Prueba <!-- optional alias: Test Cases|Test Scenarios -->
-
-| ID | Escenario | Resultado Esperado |
-|----|-----------|-------------------|
-| TC-NNN.1 | Descripción del escenario | Resultado esperado |
-| TC-NNN.2 | Otro escenario | Resultado esperado |
-
-## Eventos Producidos <!-- optional alias: Events -->
-
-| Evento | Descripción |
-|--------|-------------|
-| [[EVT-Algo-Ocurrió]] | Cuándo se emite |
-
-## Requisitos Relacionados <!-- optional alias: Related Requirements -->
-
-- [[REQ-NNN.1]] - Descripción
-- [[REQ-NNN.2]] - Descripción
-
-## Notas de Implementación <!-- optional -->
-
-- Consideraciones técnicas
-- Dependencias
-- Sugerencias de implementación
+| Rule | Description |
+|------|-------------|
+| [[BR-001-RuleName]] | Brief description |
+| [[BR-002-RuleName]] | Brief description |

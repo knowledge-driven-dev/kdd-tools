@@ -1,35 +1,30 @@
 ---
-# @type: requirement
-# @description: Requisitos funcionales en formato EARS
 # @file-pattern: ^REQ-\d{3}-.+\.md$
-# @path-pattern: behavior/requirements/
+# @path-pattern: 04-verification/requirements/
 
 id: REQ-NNN                   # @required @pattern: ^REQ-\d{3}$
-kind: requirements            # @literal: requirements
-status: draft                 # @enum: draft|proposed|approved|deprecated @default: draft
-source: UC-NNN                # @optional @pattern: ^UC-\d{3}$ @description: Caso de uso origen
-domain: six-hats              # @optional
-tags:                         # @type: array
-  - ears
+kind: requirement              # @required
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
+source: UC-NNN                # @pattern: ^UC-\d{3}$
 ---
 
-# Requisitos EARS: Título <!-- required pattern: ^Requisitos EARS: -->
+# EARS Requirements: Title <!-- required pattern: ^(EARS Requirements|Requisitos EARS): -->
 
-Requisitos derivados del caso de uso [[UC-NNN-Nombre]].
+Requirements derived from [[UC-NNN-Name]].
 
-## Resumen de Requisitos <!-- optional -->
+## Summary <!-- optional -->
 
-| ID | Patrón EARS | Resumen |
+| ID | EARS Pattern | Summary |
 |----|-------------|---------|
-| REQ-NNN.1 | Event-Driven | Descripción breve |
-| REQ-NNN.2 | Unwanted (If) | Descripción breve |
-| REQ-NNN.3 | State-Driven | Descripción breve |
+| REQ-NNN.1 | Event-Driven | Brief description |
+| REQ-NNN.2 | Unwanted (If) | Brief description |
+| REQ-NNN.3 | State-Driven | Brief description |
 
 ---
 
-## REQ-NNN.1: Nombre del Requisito (Patrón) <!-- required-pattern: ^REQ-\d{3}\.\d+: -->
+## REQ-NNN.1: Requirement Name <!-- required-pattern: ^REQ-\d{3}\.\d+: -->
 
-**Patrón**: Event-Driven | Unwanted (If/While) | State-Driven (While) | Optional (Where) | Ubiquitous
+**Pattern**: Event-Driven | Unwanted (If/While) | State-Driven (While) | Optional (Where) | Ubiquitous
 
 ```
 WHEN <trigger event>,
@@ -38,9 +33,9 @@ the system SHALL <required action>
   AND SHALL NOT <prohibited action>.
 ```
 
-**Trazabilidad**: UC-NNN, paso X
+**Traceability**: UC-NNN, step X
 
-**Criterio de Aceptación**:
+**Acceptance Criterion**:
 <!-- expects: gherkin -->
 ```gherkin
 Given <precondition>
@@ -51,9 +46,9 @@ Then <expected result>
 
 ---
 
-## REQ-NNN.2: Otro Requisito <!-- pattern: ^REQ-\d{3}\.\d+: -->
+## REQ-NNN.2: Another Requirement <!-- pattern: ^REQ-\d{3}\.\d+: -->
 
-**Patrón**: Unwanted Behavior (If)
+**Pattern**: Unwanted Behavior (If)
 
 ```
 IF <unwanted condition>,
@@ -61,9 +56,9 @@ the system SHALL <defensive action>
   AND SHALL NOT <prohibited action>.
 ```
 
-**Trazabilidad**: UC-NNN, extensión Xa
+**Traceability**: UC-NNN, extension Xa
 
-**Criterio de Aceptación**:
+**Acceptance Criterion**:
 ```gherkin
 Given <context>
 When <unwanted condition occurs>
@@ -72,23 +67,9 @@ Then <system response>
 
 ---
 
-## Matriz de Trazabilidad <!-- optional -->
+## Traceability Matrix <!-- optional -->
 
-| Requisito | Paso UC | Regla de Negocio | Test Case |
-|-----------|---------|------------------|-----------|
-| REQ-NNN.1 | 1-5 | - | TC-NNN.1 |
-| REQ-NNN.2 | Ext Xa | BR-XXX-001 | TC-NNN.2 |
-
-## Esquema Zod (Implementación) <!-- optional -->
-
-<!-- expects: typescript -->
-```typescript
-// packages/shared/validators/xxx.ts
-import { z } from 'zod'
-
-export const xxxSchema = z.object({
-  campo: z.string().min(1).max(100),
-})
-
-export type XxxInput = z.infer<typeof xxxSchema>
-```
+| Requirement | UC Step | Business Rule | Test Case |
+|-------------|---------|---------------|-----------|
+| REQ-NNN.1 | 1-5 | - | VER-NNN.1 |
+| REQ-NNN.2 | Ext Xa | BR-001-Name | VER-NNN.2 |

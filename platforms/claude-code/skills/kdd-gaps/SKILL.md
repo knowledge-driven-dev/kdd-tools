@@ -32,33 +32,35 @@ Actívate cuando:
 
 ```
 specs/
-├── 00-requirements/     # PRD, objetivos, decisiones de alto nivel
+├── 00-requirements/     # INPUT: PRD, objetivos, value units, releases
 │   ├── PRD.md
-│   ├── objectives/
-│   └── decisions/       # ADRs de requisitos
+│   ├── objectives/      # OBJ-*
+│   ├── value-units/     # UV-*
+│   └── releases/        # REL-*
 │
-├── 01-domain/           # Modelo de dominio (NO referencia capas superiores)
+├── 01-domain/           # BASE: Modelo de dominio (NO referencia capas superiores)
 │   ├── entities/        # Entidades del dominio
-│   ├── rules/           # Reglas de negocio (BR-*, BP-*)
+│   ├── rules/           # Reglas de negocio (BR-NNN-{Name})
 │   └── events/          # Eventos de dominio (EVT-*)
 │
 ├── 02-behavior/         # Qué puede hacer el sistema
 │   ├── commands/        # Comandos (CMD-*)
 │   ├── queries/         # Consultas (QRY-*)
 │   ├── processes/       # Procesos orquestados (PROC-*)
-│   ├── use-cases/       # Casos de uso (UC-*)  ← AQUÍ están los UC
-│   └── policies/        # Políticas transversales
+│   ├── use-cases/       # Casos de uso (UC-*)
+│   └── policies/        # Políticas (BP-*, XP-*)
 │
 ├── 03-experience/       # Cómo interactúa el usuario
 │   ├── views/           # Vistas/pantallas (UI-*)
-│   └── flows/           # Flujos multi-paso (FLOW-*)
+│   └── components/      # Componentes reutilizables
 │
 ├── 04-verification/     # Criterios de aceptación
-│   └── criteria/        # Requisitos verificables (REQ-*)
+│   ├── requirements/    # Requisitos verificables (REQ-*)
+│   └── examples/        # Escenarios Gherkin (.feature)
 │
-└── 05-architecture/     # Decisiones técnicas
-    ├── decisions/       # ADRs técnicos
-    └── implementation-charter.md
+└── 05-architecture/     # ORTHOGONAL: Decisiones técnicas
+    ├── decisions/       # ADRs (técnicos y de requisitos)
+    └── charter.md
 ```
 
 ## Reglas de Dependencia entre Capas
@@ -66,29 +68,33 @@ specs/
 **Las capas inferiores NO pueden referenciar capas superiores.**
 
 ```
-00-requirements  →  Define el "qué" de alto nivel
+00-requirements  (INPUT — alimenta el diseño, puede mencionar conceptos de dominio)
+
+01-domain        →  Entidades, reglas, eventos (BASE)
        ↓ puede referenciar
-01-domain        →  Entidades, reglas, eventos
+02-behavior      →  Comandos, queries, use-cases, políticas
        ↓ puede referenciar
-02-behavior  →  Comandos, queries, use-cases
+03-experience    →  Vistas, componentes
        ↓ puede referenciar
-03-experience    →  Vistas, flows
-       ↓ puede referenciar
-04-verification  →  Criterios de aceptación
-       ↓ puede referenciar
-05-architecture  →  Decisiones técnicas
+04-verification  →  Requisitos verificables, ejemplos (.feature)
+
+05-architecture  (ORTHOGONAL — puede referenciar cualquier capa)
+
+Dependencia del flujo principal: 04 → 03 → 02 → 01
 ```
 
 ### Referencias Válidas
 
 | Desde | Puede referenciar |
 |-------|-------------------|
+| `00-requirements/` | Puede mencionar conceptos de dominio (INPUT, fuera del flujo) |
 | `01-domain/events/` | Solo `01-domain/entities/`, `01-domain/rules/` |
 | `01-domain/rules/` | Solo `01-domain/entities/` |
 | `02-behavior/commands/` | `01-domain/*`, `02-behavior/processes/` |
 | `02-behavior/use-cases/` | `01-domain/*`, `02-behavior/commands,queries/` |
 | `03-experience/views/` | `01-domain/entities/`, `02-behavior/use-cases/` |
-| `04-verification/criteria/` | Todas las capas superiores |
+| `04-verification/requirements/` | `01-domain/*`, `02-behavior/*`, `03-experience/*` |
+| `05-architecture/decisions/` | Todas las capas (ORTHOGONAL) |
 
 ### NO es un Gap (Falsos Positivos a Evitar)
 
@@ -132,8 +138,8 @@ Busca patrones que sugieren reglas no documentadas:
 
 | Señal Detectada | Ubicación | Regla Sugerida |
 |-----------------|-----------|----------------|
-| "máximo 6 personas" | CMD-009 | BR-PERSONA-00X: Límite de personas |
-| "solo si tiene créditos" | CMD-009 | BR-CREDITO-00X: Validación de créditos |
+| "máximo 6 personas" | CMD-009 | BR-00X-PersonLimit: Límite de personas |
+| "solo si tiene créditos" | CMD-009 | BR-00Y-CreditCheck: Validación de créditos |
 ```
 
 #### B. Casos de Error Sin Documentar
@@ -171,7 +177,7 @@ Busca en **máquinas de estado de entidades** transiciones sin evento:
 #### D. Criterios de Aceptación Incompletos
 
 Para cada caso de uso en `02-behavior/use-cases/`, verifica:
-- ¿Tiene criterios en `04-verification/criteria/`?
+- ¿Tiene criterios en `04-verification/requirements/`?
 - ¿Los criterios cubren el flujo principal?
 - ¿Los criterios cubren flujos alternativos?
 
@@ -184,11 +190,11 @@ Para cada caso de uso en `02-behavior/use-cases/`, verifica:
 | UC-004 | 60% | Faltan criterios de error de IA |
 ```
 
-#### E. Vistas/Flows Sin Spec
+#### E. Vistas/Componentes Sin Spec
 
 Busca en casos de uso referencias a UI no documentadas:
 - Pantallas mencionadas sin UI-* en `03-experience/views/`
-- Flujos multi-paso sin FLOW-* en `03-experience/flows/`
+- Componentes reutilizables sin spec en `03-experience/components/`
 
 ### Fase 3: Priorizar Huecos
 
@@ -219,7 +225,7 @@ Busca en casos de uso referencias a UI no documentadas:
 ```markdown
 ## Acciones Recomendadas
 
-1. **Inmediato**: Crear BR-CREDITO-00X para validación de créditos
+1. **Inmediato**: Crear BR-00Y-CreditCheck para validación de créditos
 2. **Inmediato**: Documentar error handling en CMD-009
 3. **Próximo sprint**: Completar criterios de UC-004, UC-007
 4. **Backlog**: Añadir ejemplos a entidades

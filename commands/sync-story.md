@@ -24,7 +24,7 @@ $ARGUMENTS
 
 Si no se proporciona ruta, detecta automáticamente las specs UI modificadas:
 
-1. Ejecuta: `git diff --cached --name-only | grep "specs/04-interaction/views/UI-.*\.md"`
+1. Ejecuta: `git diff --cached --name-only | grep "specs/03-experience/views/UI-.*\.md"`
 2. Para cada spec encontrada, ejecuta el proceso de sincronización
 
 ### Modo específico (con ruta)
@@ -48,7 +48,7 @@ Si no se proporciona ruta, detecta automáticamente las specs UI modificadas:
 
 ```tsx
 // ============================================
-// @generated from specs/04-interaction/views/UI-PersonaForm.md
+// @generated from specs/03-experience/views/UI-PersonaForm.md
 // Last sync: 2024-01-15T10:30:00Z
 // DO NOT EDIT this section - Se regenera automáticamente
 // ============================================
@@ -143,7 +143,7 @@ Default.play = async ({ canvasElement }) => {
 
 ```bash
 # Sincronizar spec específica
-/kdd:sync-story specs/04-interaction/views/UI-PersonaForm.md
+/kdd:sync-story specs/03-experience/views/UI-PersonaForm.md
 
 # Detectar y sincronizar todas las specs UI modificadas
 /kdd:sync-story auto

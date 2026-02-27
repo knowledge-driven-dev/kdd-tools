@@ -116,7 +116,20 @@ async function parseTemplate(filePath: string): Promise<TemplateSchema | null> {
     const { data: frontmatter, content } = matter(raw)
 
     // Extraer metadatos de la plantilla desde comentarios en frontmatter
-    const type = extractMetaValue(raw, '@type') as DocType
+    // v2.0: infer type from kind field in frontmatter, @type annotation, or filename
+    let type = extractMetaValue(raw, '@type') as DocType | null
+    if (!type) {
+      // Infer from kind field in frontmatter
+      const kind = frontmatter.kind as string | undefined
+      if (kind) {
+        type = kindToDocType(kind)
+      }
+    }
+    if (!type) {
+      // Infer from filename
+      const fileName = basename(filePath, '.template.md')
+      type = fileNameToDocType(fileName)
+    }
     if (!type) return null
 
     const description = extractMetaValue(raw, '@description') ?? ''
@@ -147,6 +160,67 @@ async function parseTemplate(filePath: string): Promise<TemplateSchema | null> {
     console.warn(`Error parseando plantilla ${filePath}:`, error)
     return null
   }
+}
+
+/**
+ * Maps a kind value to a DocType
+ */
+function kindToDocType(kind: string): DocType | null {
+  const map: Record<string, DocType> = {
+    'use-case': 'use-case',
+    'requirement': 'requirement',
+    'requirements': 'requirement',
+    'entity': 'entity',
+    'role': 'entity',
+    'system': 'entity',
+    'catalog': 'entity',
+    'event': 'event',
+    'business-rule': 'rule',
+    'business-policy': 'business-policy',
+    'cross-policy': 'cross-policy',
+    'rule': 'rule',
+    'process': 'process',
+    'command': 'command',
+    'query': 'query',
+    'prd': 'prd',
+    'nfr': 'nfr',
+    'adr': 'adr',
+    'objective': 'objective',
+    'value-unit': 'value-unit',
+    'release': 'release',
+    'implementation-charter': 'implementation-charter',
+    'ui-view': 'ui-view',
+    'ui-component': 'ui-component',
+    'verification': 'requirement',
+  }
+  return map[kind] ?? null
+}
+
+/**
+ * Maps a template filename to a DocType
+ */
+function fileNameToDocType(fileName: string): DocType | null {
+  const map: Record<string, DocType> = {
+    'use-case': 'use-case',
+    'requirement': 'requirement',
+    'verification': 'requirement',
+    'entity': 'entity',
+    'event': 'event',
+    'rule': 'rule',
+    'process': 'process',
+    'command': 'command',
+    'query': 'query',
+    'prd': 'prd',
+    'nfr': 'nfr',
+    'adr': 'adr',
+    'objective': 'objective',
+    'value-unit': 'value-unit',
+    'release': 'release',
+    'implementation-charter': 'implementation-charter',
+    'ui-view': 'ui-view',
+    'ui-component': 'ui-component',
+  }
+  return map[fileName] ?? null
 }
 
 /**

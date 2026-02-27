@@ -25,17 +25,8 @@ paths:
 
 ```yaml
 ---
-kind: ui-component            # Literal
-status: draft
-version: "1.0"
-links:
-  entities: []                # Entidades que muestra
-  use-cases: []               # Use cases relacionados
-  components: []              # Componentes hijos
-  parent-views: []            # Vistas donde se usa
-storybook:
-  category: "Components"      # o "Modals"
-  auto-generate: true
+kind: ui-component
+status: draft                 # draft | review | approved | deprecated | superseded
 ---
 ```
 
@@ -208,13 +199,6 @@ Qué acción abre este modal.
 ---
 kind: ui-component
 status: draft
-version: "1.0"
-links:
-  entities: [Reto]
-  parent-views: [VIEW-Dashboard]
-storybook:
-  category: "Components"
-  auto-generate: true
 ---
 
 # UI-RetoCard

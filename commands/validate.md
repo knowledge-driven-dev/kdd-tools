@@ -59,7 +59,7 @@ Ejecuta el validador de especificaciones KDD que verifica frontmatter, estructur
 /kdd:validate --fix
 
 # Validar directorio específico
-/kdd:validate specs/02-domain
+/kdd:validate specs/01-domain
 
 # Modo verbose
 /kdd:validate -v
@@ -70,19 +70,28 @@ Ejecuta el validador de especificaciones KDD que verifica frontmatter, estructur
 
 ## Tipos de Documento Soportados
 
-| Tipo | Identificación | Ejemplo |
-|------|----------------|---------|
-| Entity | Path `/entities/`, tag `entity` | `Reto.md` |
-| Event | Prefijo `EVT-`, path `/events/` | `EVT-Reto-Creado.md` |
-| Rule | Prefijo `BR-` o `BP-`, path `/rules/` | `BR-RETO-001.md` |
-| Command | Prefijo `CMD-`, path `/commands/` | `CMD-001-CreateChallenge.md` |
-| Query | Prefijo `QRY-`, path `/queries/` | `QRY-001-GetChallenge.md` |
-| Process | Prefijo `PROC-`, path `/processes/` | `PROC-001-StartSession.md` |
-| Use Case | Prefijo `UC-`, path `/use-cases/` | `UC-001-Crear-Reto.md` |
-| UI View | Prefijo `UI-`, path `/views/` | `UI-RetoCard.md` |
-| Requirement | Prefijo `REQ-`, path `/criteria/` | `REQ-001-Crear-Reto.md` |
-| ADR | Prefijo `ADR-`, path `/decisions/` | `ADR-0001-Stack.md` |
-| PRD | Prefijo `PRD-` o nombre `PRD.md` | `PRD.md` |
+| Tipo | Capa | Identificación | Ejemplo |
+|------|------|----------------|---------|
+| PRD | 00-requirements | Prefijo `PRD-` o nombre `PRD.md` | `PRD.md` |
+| Objective | 00-requirements | Prefijo `OBJ-` | `OBJ-001-IncreaseRetention.md` |
+| Value Unit | 00-requirements | Prefijo `UV-` | `UV-001-SessionCompleted.md` |
+| Release | 00-requirements | Prefijo `REL-` | `REL-001-MVP.md` |
+| NFR | 00-requirements | Prefijo `NFR-` | `NFR-001-Performance.md` |
+| Entity | 01-domain | Path `/entities/`, tag `entity` | `Reto.md` |
+| Event | 01-domain | Prefijo `EVT-`, path `/events/` | `EVT-Reto-Creado.md` |
+| Business Rule | 01-domain | Prefijo `BR-`, path `/rules/` | `BR-RETO-001.md` |
+| Command | 02-behavior | Prefijo `CMD-`, path `/commands/` | `CMD-001-CreateChallenge.md` |
+| Query | 02-behavior | Prefijo `QRY-`, path `/queries/` | `QRY-001-GetChallenge.md` |
+| Process | 02-behavior | Prefijo `PROC-`, path `/processes/` | `PROC-001-StartSession.md` |
+| Business Policy | 02-behavior | Prefijo `BP-`, path `/policies/` | `BP-001-Scoring.md` |
+| Cross Policy | 02-behavior | Prefijo `XP-`, path `/policies/` | `XP-001-RateLimit.md` |
+| Use Case | 02-behavior | Prefijo `UC-`, path `/use-cases/` | `UC-001-Crear-Reto.md` |
+| UI View | 03-experience | Prefijo `UI-`, path `/views/` | `UI-RetoCard.md` |
+| UI Component | 03-experience | Path `/components/` | `RetoCardComponent.md` |
+| Requirement | 04-verification | Prefijo `REQ-`, path `/requirements/` | `REQ-001-Crear-Reto.md` |
+| Verification | 04-verification | Prefijo `VER-`, path `/examples/` | `VER-001-Crear-Reto.feature` |
+| ADR | 05-architecture | Prefijo `ADR-`, path `/decisions/` | `ADR-0001-Stack.md` |
+| Impl. Charter | 05-architecture | Prefijo `ARCH-CHARTER-` | `ARCH-CHARTER-001-MVP.md` |
 
 ## Errores Comunes
 

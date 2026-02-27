@@ -22,7 +22,6 @@ Ejemplos:
 ```yaml
 ---
 kind: event
-source: "[[Entidad]]"         # Entidad que emite el evento (opcional)
 ---
 ```
 
@@ -77,7 +76,7 @@ Documentar quién reacciona al evento:
 | UI | Actualiza la interfaz |
 | Notifications | Envía notificación push |
 | Analytics | Registra métrica |
-| [[PRC-001]] | Inicia proceso derivado |
+| [[PROC-001]] | Inicia proceso derivado |
 ```
 
 ## Eventos Relacionados
@@ -97,7 +96,6 @@ Documentar quién reacciona al evento:
 ```markdown
 ---
 kind: event
-source: "[[Reto]]"
 ---
 
 # EVT-Reto-Creado

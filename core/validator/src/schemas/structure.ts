@@ -1,5 +1,6 @@
 /**
  * Definición de estructura esperada (secciones) por tipo de documento
+ * Alineado con KDD v2.0 — headings en inglés, secciones actualizadas
  */
 
 import type { DocType } from '../lib/parser'
@@ -27,43 +28,43 @@ export interface StructureTemplate {
 }
 
 // =============================================================================
-// Template: Use Case (UC-xxx)
+// Template: Use Case (UC-NNN)
 // =============================================================================
 const useCaseTemplate: StructureTemplate = {
   requiresH1: true,
   h1Pattern: /^UC-\d{3}:\s*.+/,
   sections: [
-    { name: 'Descripción', level: 2, required: true },
-    { name: 'Actores', level: 2, required: true, alternatives: [/^Actor(es)?/i] },
-    { name: 'Disparadores', level: 2, required: false, alternatives: [/^Trigger(s)?/i] },
-    { name: 'Precondiciones', level: 2, required: true, alternatives: [/^Precondition(s)?/i] },
+    { name: 'Description', level: 2, required: true, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Actors', level: 2, required: true, alternatives: [/^Actor(es|s)?/i] },
+    { name: 'Triggers', level: 2, required: false, alternatives: [/^Disparadores/i] },
+    { name: 'Preconditions', level: 2, required: true, alternatives: [/^Precondiciones/i] },
     {
-      name: 'Flujo Principal',
+      name: 'Main Flow',
       level: 2,
       required: true,
       alternatives: [/^(Flujo Principal|Happy Path|Main Flow)/i],
     },
     {
-      name: 'Extensiones',
+      name: 'Extensions',
       level: 2,
       required: false,
-      alternatives: [/^(Extensiones|Flujos Alternativos|Extensions|Alternative)/i],
+      alternatives: [/^(Extensiones|Flujos Alternativos|Alternative)/i],
     },
     {
-      name: 'Garantías Mínimas',
+      name: 'Minimal Guarantees',
       level: 2,
       required: false,
-      alternatives: [/^(Garantías Mínimas|Minimal Guarantees)/i],
+      alternatives: [/^Garant[ií]as M[ií]nimas/i],
     },
-    { name: 'Postcondiciones', level: 2, required: true, alternatives: [/^Postcondition(s)?/i] },
+    { name: 'Postconditions', level: 2, required: true, alternatives: [/^Postcondiciones/i] },
     {
-      name: 'Reglas de Negocio',
+      name: 'Business Rules',
       level: 2,
       required: false,
       alternatives: [/^(Reglas de Negocio|Business Rules)/i],
     },
     {
-      name: 'Escenarios de Prueba',
+      name: 'Test Scenarios',
       level: 2,
       required: false,
       alternatives: [/^(Escenarios|Test Cases|Test Scenarios)/i],
@@ -72,14 +73,14 @@ const useCaseTemplate: StructureTemplate = {
 }
 
 // =============================================================================
-// Template: Requirement (REQ-xxx)
+// Template: Requirement (REQ-NNN)
 // =============================================================================
 const requirementTemplate: StructureTemplate = {
   requiresH1: true,
   h1Pattern: /^(Requisitos|Requirements)/i,
   sections: [
     {
-      name: 'Resumen de Requisitos',
+      name: 'Summary',
       level: 2,
       required: false,
       alternatives: [/^(Resumen|Summary)/i],
@@ -89,10 +90,10 @@ const requirementTemplate: StructureTemplate = {
       level: 2,
       required: true,
       alternatives: [/^REQ-\d{3}\.\d+/],
-      description: 'Al menos un requisito individual (REQ-XXX.X)',
+      description: 'At least one individual requirement (REQ-NNN.X)',
     },
     {
-      name: 'Matriz de Trazabilidad',
+      name: 'Traceability Matrix',
       level: 2,
       required: false,
       alternatives: [/^(Matriz|Traceability)/i],
@@ -104,19 +105,19 @@ const requirementTemplate: StructureTemplate = {
 // Template: Entity
 // =============================================================================
 const entityTemplate: StructureTemplate = {
-  requiresH1: false, // El H1 es el nombre de la entidad
+  requiresH1: false, // H1 is the entity name
   sections: [
-    { name: 'Descripción', level: 2, required: true, alternatives: [/^Description/i] },
-    { name: 'Atributos', level: 2, required: true, alternatives: [/^(Atributos|Attributes)/i] },
-    { name: 'Relaciones', level: 2, required: false, alternatives: [/^(Relaciones|Relations)/i] },
+    { name: 'Description', level: 2, required: true, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Attributes', level: 2, required: true, alternatives: [/^Atributos/i] },
+    { name: 'Relations', level: 2, required: false, alternatives: [/^Relaciones/i] },
     {
-      name: 'Ciclo de Vida',
+      name: 'Lifecycle',
       level: 2,
       required: false,
       alternatives: [/^(Ciclo de Vida|Lifecycle|State)/i],
     },
     {
-      name: 'Invariantes',
+      name: 'Invariants',
       level: 2,
       required: false,
       alternatives: [/^(Invariantes|Invariants|Constraints)/i],
@@ -130,58 +131,90 @@ const entityTemplate: StructureTemplate = {
 const eventTemplate: StructureTemplate = {
   requiresH1: false,
   sections: [
-    { name: 'Descripción', level: 2, required: true },
-    { name: 'Emisor', level: 2, required: false, alternatives: [/^(Emisor|Emitter|Source)/i] },
+    { name: 'Description', level: 2, required: true, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Emitter', level: 2, required: false, alternatives: [/^(Emisor|Source)/i] },
     { name: 'Payload', level: 2, required: true },
-    { name: 'Ejemplo', level: 2, required: false, alternatives: [/^(Ejemplo|Example)/i] },
+    { name: 'Example', level: 2, required: false, alternatives: [/^Ejemplo/i] },
     {
-      name: 'Suscriptores',
+      name: 'Subscribers',
       level: 2,
       required: false,
-      alternatives: [/^(Suscriptores|Subscribers|Consumers)/i],
+      alternatives: [/^(Suscriptores|Consumers)/i],
     },
   ],
 }
 
 // =============================================================================
-// Template: Rule (BR-xxx, BP-xxx)
+// Template: Rule (BR-NNN-Name) / Business Policy / Cross-Policy
 // =============================================================================
 const ruleTemplate: StructureTemplate = {
   requiresH1: true,
-  h1Pattern: /^(BR|BP)-[A-Z]+-\d{3}/,
+  h1Pattern: /^(BR|BP|XP)-\d{3}/,
   sections: [
-    { name: 'Declaración', level: 2, required: true },
+    { name: 'Statement', level: 2, required: true, alternatives: [/^Declaraci[oó]n/i] },
+    { name: 'Rationale', level: 2, required: true, alternatives: [/^Justificaci[oó]n/i] },
+    { name: 'When Applies', level: 2, required: true, alternatives: [/^Cu[aá]ndo Aplica/i] },
+    { name: 'Violation Behavior', level: 2, required: true, alternatives: [/^Comportamiento ante Violaci[oó]n/i] },
     {
-      name: 'Entidades Relacionadas',
+      name: 'EARS Formalization',
       level: 2,
       required: false,
-      alternatives: [/^(Entidades|Entities)/i],
+      alternatives: [/^(Formalizaci[oó]n|Formalization|EARS)/i],
     },
-    {
-      name: 'Formalización',
-      level: 2,
-      required: false,
-      alternatives: [/^(Formalización|Formalization)/i],
-    },
-    { name: 'Ejemplos', level: 2, required: false, alternatives: [/^(Ejemplos|Examples)/i] },
+    { name: 'Examples', level: 2, required: false, alternatives: [/^Ejemplos/i] },
   ],
 }
 
 // =============================================================================
-// Template: Process (PRC-xxx)
+// Template: Process (PROC-NNN)
 // =============================================================================
 const processTemplate: StructureTemplate = {
   requiresH1: true,
-  h1Pattern: /^PRC-\d{3}/,
+  h1Pattern: /^PROC-\d{3}/,
   sections: [
-    { name: 'Descripción', level: 2, required: false },
+    { name: 'Description', level: 2, required: false, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Triggers', level: 2, required: false, alternatives: [/^Disparadores/i] },
     {
-      name: 'Diagrama',
+      name: 'Flow',
       level: 2,
       required: false,
-      description: 'Se espera un bloque mermaid en el contenido',
+      alternatives: [/^(Diagrama|Flujo)/i],
+      description: 'Mermaid block expected',
     },
-    { name: 'Pasos', level: 2, required: false, alternatives: [/^(Pasos|Steps)/i] },
+    { name: 'Steps', level: 2, required: false, alternatives: [/^Pasos/i] },
+    { name: 'Compensation', level: 2, required: false, alternatives: [/^Compensaci[oó]n/i] },
+  ],
+}
+
+// =============================================================================
+// Template: Command (CMD-NNN)
+// =============================================================================
+const commandTemplate: StructureTemplate = {
+  requiresH1: true,
+  h1Pattern: /^CMD-\d{3}/,
+  sections: [
+    { name: 'Purpose', level: 2, required: true, alternatives: [/^Prop[oó]sito/i] },
+    { name: 'Input', level: 2, required: true, alternatives: [/^Entrada/i] },
+    { name: 'Preconditions', level: 2, required: true, alternatives: [/^Precondiciones/i] },
+    { name: 'Postconditions', level: 2, required: true, alternatives: [/^Postcondiciones/i] },
+    { name: 'Errors', level: 2, required: true, alternatives: [/^(Errores|Possible Errors)/i] },
+    { name: 'Rules Validated', level: 2, required: false, alternatives: [/^Reglas Validadas/i] },
+    { name: 'Events Emitted', level: 2, required: false, alternatives: [/^Eventos Emitidos/i] },
+  ],
+}
+
+// =============================================================================
+// Template: Query (QRY-NNN)
+// =============================================================================
+const queryTemplate: StructureTemplate = {
+  requiresH1: true,
+  h1Pattern: /^QRY-\d{3}/,
+  sections: [
+    { name: 'Purpose', level: 2, required: true, alternatives: [/^Prop[oó]sito/i] },
+    { name: 'Input', level: 2, required: true, alternatives: [/^Entrada/i] },
+    { name: 'Output', level: 2, required: true, alternatives: [/^Salida/i] },
+    { name: 'Authorization', level: 2, required: false, alternatives: [/^Autorizaci[oó]n/i] },
+    { name: 'Errors', level: 2, required: false, alternatives: [/^(Errores|Possible Errors)/i] },
   ],
 }
 
@@ -191,32 +224,11 @@ const processTemplate: StructureTemplate = {
 const prdTemplate: StructureTemplate = {
   requiresH1: true,
   sections: [
-    { name: 'Problema', level: 2, required: true, alternatives: [/^(Problema|Problem)/i] },
-    { name: 'Usuarios', level: 2, required: false, alternatives: [/^(Usuarios|Users|Jobs)/i] },
-    { name: 'Alcance', level: 2, required: true, alternatives: [/^(Alcance|Scope)/i] },
-    {
-      name: 'Requisitos',
-      level: 2,
-      required: false,
-      alternatives: [/^(Requisitos funcionales|Requirements)/i],
-    },
-    { name: 'NFRs', level: 2, required: false, alternatives: [/^(NFRs|Non.?Functional)/i] },
-    { name: 'Métricas', level: 2, required: false, alternatives: [/^(Métricas|Metrics|Success)/i] },
-  ],
-}
-
-// =============================================================================
-// Template: Story (US-xxx)
-// =============================================================================
-const storyTemplate: StructureTemplate = {
-  requiresH1: false,
-  sections: [
-    {
-      name: 'Criterios de aceptación',
-      level: 2,
-      required: false,
-      alternatives: [/^(Criterios|Acceptance)/i],
-    },
+    { name: 'Problem', level: 2, required: true, alternatives: [/^Problema/i] },
+    { name: 'Users', level: 2, required: false, alternatives: [/^(Usuarios|Jobs)/i] },
+    { name: 'Scope', level: 2, required: true, alternatives: [/^Alcance/i] },
+    { name: 'Acceptance Criteria', level: 2, required: false, alternatives: [/^(Criterios|Acceptance)/i] },
+    { name: 'Success Metrics', level: 2, required: false, alternatives: [/^(M[eé]tricas|Metrics|Success)/i] },
   ],
 }
 
@@ -226,15 +238,10 @@ const storyTemplate: StructureTemplate = {
 const nfrTemplate: StructureTemplate = {
   requiresH1: true,
   sections: [
-    { name: 'Objetivo', level: 2, required: false, alternatives: [/^(Objetivo|Goal|Target)/i] },
-    { name: 'SLI', level: 2, required: false },
-    { name: 'SLO', level: 2, required: false },
-    {
-      name: 'Estrategias',
-      level: 2,
-      required: false,
-      alternatives: [/^(Estrategias|Strategies)/i],
-    },
+    { name: 'Goal', level: 2, required: false, alternatives: [/^(Objetivo|Target)/i] },
+    { name: 'Metrics', level: 2, required: false, alternatives: [/^(M[eé]tricas|SLI|SLO)/i] },
+    { name: 'Affected Use Cases', level: 2, required: false, alternatives: [/^Casos de Uso Afectados/i] },
+    { name: 'Trade-offs', level: 2, required: false, alternatives: [/^(Compromisos|Trade.offs)/i] },
   ],
 }
 
@@ -244,14 +251,103 @@ const nfrTemplate: StructureTemplate = {
 const adrTemplate: StructureTemplate = {
   requiresH1: true,
   sections: [
-    { name: 'Contexto', level: 2, required: true, alternatives: [/^Context/i] },
-    { name: 'Decisión', level: 2, required: true, alternatives: [/^(Decisión|Decision)/i] },
+    { name: 'Context', level: 2, required: true, alternatives: [/^Contexto/i] },
+    { name: 'Decision', level: 2, required: true, alternatives: [/^Decisi[oó]n/i] },
+    { name: 'Options Considered', level: 2, required: false, alternatives: [/^(Opciones|Options)/i] },
     {
-      name: 'Consecuencias',
+      name: 'Consequences',
       level: 2,
       required: true,
-      alternatives: [/^(Consecuencias|Consequences)/i],
+      alternatives: [/^Consecuencias/i],
     },
+  ],
+}
+
+// =============================================================================
+// Template: Objective (OBJ-NNN)
+// =============================================================================
+const objectiveTemplate: StructureTemplate = {
+  requiresH1: true,
+  h1Pattern: /^OBJ-\d{3}/,
+  sections: [
+    { name: 'Description', level: 2, required: true, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Key Results', level: 2, required: false, alternatives: [/^Resultados Clave/i] },
+    { name: 'Traceability', level: 2, required: false, alternatives: [/^Trazabilidad/i] },
+  ],
+}
+
+// =============================================================================
+// Template: Value Unit (UV-NNN)
+// =============================================================================
+const valueUnitTemplate: StructureTemplate = {
+  requiresH1: true,
+  h1Pattern: /^UV-\d{3}/,
+  sections: [
+    { name: 'Objective', level: 2, required: true, alternatives: [/^Objetivo/i] },
+    { name: 'Scope', level: 2, required: true, alternatives: [/^Alcance/i] },
+    { name: 'Inputs', level: 2, required: false, alternatives: [/^Entradas/i] },
+    { name: 'Outputs', level: 2, required: false, alternatives: [/^Salidas/i] },
+    { name: 'Exit Criteria', level: 2, required: false, alternatives: [/^Criterios de Salida/i] },
+    { name: 'Traceability', level: 2, required: false, alternatives: [/^Trazabilidad/i] },
+  ],
+}
+
+// =============================================================================
+// Template: Release (REL-NNN)
+// =============================================================================
+const releaseTemplate: StructureTemplate = {
+  requiresH1: true,
+  h1Pattern: /^REL-\d{3}/,
+  sections: [
+    { name: 'Objective', level: 2, required: true, alternatives: [/^Objetivo/i] },
+    { name: 'Value Units', level: 2, required: true, alternatives: [/^Unidades de Valor/i] },
+    { name: 'Dependencies', level: 2, required: false, alternatives: [/^Dependencias/i] },
+    { name: 'Risks', level: 2, required: false, alternatives: [/^Riesgos/i] },
+    { name: 'Exit Criteria', level: 2, required: false, alternatives: [/^Criterios de Salida/i] },
+  ],
+}
+
+// =============================================================================
+// Template: Implementation Charter
+// =============================================================================
+const implementationCharterTemplate: StructureTemplate = {
+  requiresH1: true,
+  sections: [
+    { name: 'Official Stack', level: 2, required: true, alternatives: [/^Stack Oficial/i] },
+    { name: 'Repository Topology', level: 2, required: false, alternatives: [/^Topolog[ií]a/i] },
+    { name: 'KDD Artifact Mapping', level: 2, required: false, alternatives: [/^Mapeo de Artefactos/i] },
+    { name: 'Conventions', level: 2, required: false, alternatives: [/^Convenciones/i] },
+    { name: 'Tooling', level: 2, required: false, alternatives: [/^Herramientas/i] },
+  ],
+}
+
+// =============================================================================
+// Template: UI View
+// =============================================================================
+const uiViewTemplate: StructureTemplate = {
+  requiresH1: false,
+  sections: [
+    { name: 'Purpose', level: 2, required: true, alternatives: [/^(Prop[oó]sito|Description|Descripci[oó]n)/i] },
+    { name: 'Navigation', level: 2, required: false, alternatives: [/^(Navegaci[oó]n|Navigation Context)/i] },
+    { name: 'Layout', level: 2, required: true },
+    { name: 'Components', level: 2, required: true, alternatives: [/^Componentes/i] },
+    { name: 'Data', level: 2, required: false, alternatives: [/^(Datos|Data Requirements)/i] },
+    { name: 'View States', level: 2, required: true, alternatives: [/^Estados/i] },
+    { name: 'Behavior', level: 2, required: false, alternatives: [/^Comportamiento/i] },
+  ],
+}
+
+// =============================================================================
+// Template: UI Component
+// =============================================================================
+const uiComponentTemplate: StructureTemplate = {
+  requiresH1: false,
+  sections: [
+    { name: 'Description', level: 2, required: true, alternatives: [/^Descripci[oó]n/i] },
+    { name: 'Props', level: 2, required: true, alternatives: [/^Propiedades/i] },
+    { name: 'Actions', level: 2, required: false, alternatives: [/^(Acciones|Interactions)/i] },
+    { name: 'States', level: 2, required: true, alternatives: [/^Estados/i] },
+    { name: 'Accessibility', level: 2, required: false, alternatives: [/^Accesibilidad/i] },
   ],
 }
 
@@ -272,11 +368,20 @@ export const structureTemplates: Record<DocType, StructureTemplate> = {
   entity: entityTemplate,
   event: eventTemplate,
   rule: ruleTemplate,
+  'business-policy': ruleTemplate,
+  'cross-policy': ruleTemplate,
   process: processTemplate,
+  command: commandTemplate,
+  query: queryTemplate,
   prd: prdTemplate,
-  story: storyTemplate,
   nfr: nfrTemplate,
   adr: adrTemplate,
+  objective: objectiveTemplate,
+  'value-unit': valueUnitTemplate,
+  release: releaseTemplate,
+  'implementation-charter': implementationCharterTemplate,
+  'ui-view': uiViewTemplate,
+  'ui-component': uiComponentTemplate,
   unknown: unknownTemplate,
 }
 

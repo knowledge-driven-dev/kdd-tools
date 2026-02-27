@@ -10,34 +10,34 @@ Genera un índice completo de todas las entidades conocidas en el sistema de esp
 
 Escanea los siguientes directorios y extrae las entidades:
 
-### 1. Entidades de Dominio (`specs/02-domain/entities/`)
+### 1. Entidades de Dominio (`specs/01-domain/entities/`)
 Para cada archivo `.md`:
 - Extrae el nombre del H1
 - Lista los aliases del frontmatter
 - Indica el estado (draft/approved)
 
-### 2. Eventos (`specs/02-domain/events/`)
+### 2. Eventos (`specs/01-domain/events/`)
 Para cada archivo `EVT-*.md`:
 - ID del evento
 - Nombre descriptivo
 - Entidad que lo emite
 
-### 3. Reglas de Negocio (`specs/02-domain/rules/`)
+### 3. Reglas de Negocio (`specs/01-domain/rules/`)
 Para cada archivo `BR-*.md` o `BP-*.md`:
-- Reglas padre (BR-RETO, BR-SESION, etc.)
-- Reglas individuales dentro de cada archivo (BR-XXX-NNN)
+- Reglas padre (BR-001, BR-002, etc.)
+- Reglas individuales dentro de cada archivo (BR-NNN-Nombre)
 
-### 4. Comandos y Queries (`specs/03-capabilities/`)
+### 4. Comandos y Queries (`specs/02-behavior/`)
 Para cada archivo `CMD-*.md` o `QRY-*.md`:
 - ID y nombre
 - Entidades que afecta
 
-### 5. Casos de Uso (`specs/04-interaction/use-cases/`)
+### 5. Casos de Uso (`specs/02-behavior/use-cases/`)
 Para cada archivo `UC-*.md`:
 - ID y nombre
 - Actor principal
 
-### 6. Requisitos (`specs/05-verification/criteria/`)
+### 6. Requisitos (`specs/04-verification/criteria/`)
 Para cada archivo `REQ-*.md`:
 - Requisitos padre (REQ-001, REQ-002)
 - Requisitos individuales (REQ-001.1, REQ-001.2, etc.)

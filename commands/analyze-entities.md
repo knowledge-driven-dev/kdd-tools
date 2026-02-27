@@ -10,12 +10,12 @@ Analiza el archivo `$ARGUMENTS` para detectar entidades de dominio que deberían
 
 1. **Primero**, lee el archivo especificado en $ARGUMENTS
 2. **Segundo**, construye el contexto de entidades conocidas leyendo los archivos en:
-   - `specs/02-domain/entities/*.md` - Entidades del dominio
-   - `specs/02-domain/events/*.md` - Eventos del sistema
-   - `specs/02-domain/rules/*.md` - Reglas de negocio
-   - `specs/03-capabilities/commands/*.md` - Comandos
-   - `specs/03-capabilities/queries/*.md` - Queries
-   - `specs/04-interaction/use-cases/*.md` - Casos de uso
+   - `specs/01-domain/entities/*.md` - Entidades del dominio
+   - `specs/01-domain/events/*.md` - Eventos del sistema
+   - `specs/01-domain/rules/*.md` - Reglas de negocio
+   - `specs/02-behavior/commands/*.md` - Comandos
+   - `specs/02-behavior/queries/*.md` - Queries
+   - `specs/02-behavior/use-cases/*.md` - Casos de uso
 
 3. **Analiza** el contenido del archivo buscando:
 
@@ -30,11 +30,11 @@ Palabras que coinciden exactamente con nombres de entidades conocidas pero no es
 ### C. Referencias Implícitas
 - "el usuario" → podría ser [[Usuario]]
 - "al crear" en contexto de retos → podría referenciar [[UC-001-Crear-Reto]]
-- "la regla de límite" → podría ser [[BR-RETO-002]]
+- "la regla de límite" → podría ser [[BR-002-LimiteRetos]]
 
 ### D. Abreviaciones y Códigos
 - UC-001 → [[UC-001-Crear-Reto]]
-- BR-RETO-001 → enlace a la sección específica
+- BR-001-CrearReto → enlace a la sección específica
 
 ### E. Entidades Potencialmente Faltantes
 Conceptos mencionados repetidamente que podrían necesitar su propia documentación.
@@ -53,7 +53,7 @@ Presenta los resultados en este formato:
 |-------|---------------|------------|------|-----------|
 | 15 | "el reto" | [[Reto]] | implícita | Alta |
 | 23 | "usuarios" | [[Usuario]] | plural | Alta |
-| 45 | "BR-RETO-001" | [[BR-RETO-001]] | código | Exacta |
+| 45 | "BR-001-CrearReto" | [[BR-001-CrearReto]] | código | Exacta |
 
 ### Entidades Faltantes Sugeridas
 Lista de conceptos que aparecen frecuentemente y podrían necesitar documentación propia.
@@ -64,5 +64,5 @@ Si es posible, sugiere los comandos Edit para aplicar las correcciones más impo
 ## Ejemplo de Uso
 
 ```bash
-/kdd:analyze-entities specs/04-interaction/use-cases/UC-001-Crear-Reto.md
+/kdd:analyze-entities specs/02-behavior/use-cases/UC-001-Crear-Reto.md
 ```

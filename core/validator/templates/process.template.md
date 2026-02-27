@@ -1,72 +1,47 @@
 ---
-# @type: process
-# @description: Proceso de negocio (BPMN-lite)
-# @file-pattern: ^(PRC|PROC)-\d{3}-.+\.md$
-# @path-pattern: behavior/processes/
+# @file-pattern: ^PROC-\d{3}-.+\.md$
+# @path-pattern: 02-behavior/processes/
 
-id: PRC-NNN                   # @optional @pattern: ^(PRC|PROC)-\d{3}$
-kind: process                 # @literal: process
-status: draft                 # @enum: draft|proposed|approved|deprecated @default: draft
-domain: six-hats              # @optional
-tags:                         # @type: array
-  - process
+id: PROC-NNN                  # @required @pattern: ^PROC-\d{3}$
+kind: process                 # @required
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
 ---
 
-# PRC-NNN: Nombre del Proceso <!-- required pattern: ^(PRC|PROC)-\d{3}: -->
+# PROC-NNN: Process Name <!-- required pattern: ^PROC-\d{3}:\s+.+ -->
 
-## Descripción <!-- optional -->
+## Description <!-- required -->
 
-Descripción del proceso:
-- Objetivo del proceso
-- Actores involucrados
-- Resultado esperado
+Brief explanation of what this process achieves and why it runs autonomously.
 
-## Diagrama <!-- required alias: "Diagrama de Proceso" -->
+## Trigger <!-- required -->
 
-<!-- expects: mermaid:flowchart -->
-```mermaid
-flowchart TD
-    A[Inicio] --> B{¿Decisión?}
-    B -- Sí --> C[Tarea 1]
-    B -- No --> D[Tarea 2]
-    C --> E{¿Otra decisión?}
-    D --> E
-    E -- Continuar --> F[Tarea 3]
-    E -- Terminar --> G[Fin]
-    F --> G
-```
+This process starts when [[EVT-Something-Happened]] is emitted — for example, when a [[Customer]] completes payment on an [[Order]].
 
-## Participantes <!-- optional alias: Actors|Roles -->
+## Steps <!-- required -->
 
-| Rol | Responsabilidad |
-|-----|-----------------|
-| [[Usuario]] | Inicia el proceso |
-| Sistema | Ejecuta tareas automáticas |
-| [[OtroActor]] | Aprueba/valida |
+1. The system reserves stock for each line item → [[CMD-Reserve-Stock]]
+2. The system generates an invoice → [[CMD-Generate-Invoice]]
+3. The system notifies the warehouse → [[CMD-Notify-Warehouse]]
+4. The system emits [[EVT-Order-Fulfilled]]
 
-## Pasos <!-- optional alias: Steps -->
+## Compensation <!-- required -->
 
-| # | Paso | Actor | Entrada | Salida | Reglas |
-|---|------|-------|---------|--------|--------|
-| 1 | Descripción | Usuario | Datos iniciales | Resultado | [[BR-XXX-001]] |
-| 2 | Siguiente paso | Sistema | Resultado anterior | Nuevo estado | - |
-| 3 | Decisión | Usuario | Estado actual | Opción elegida | [[BR-XXX-002]] |
+If **step 1** fails for any item, the system releases already-reserved items via [[CMD-Release-Stock]] and retries after 5 min.
 
-## Casos de Uso Involucrados <!-- optional -->
+If **step 2** fails, the system releases all reserved stock via [[CMD-Release-Stock]] and marks the [[Order]] as `pending-retry`.
 
-- [[UC-NNN-Nombre]] - Paso 1
-- [[UC-MMM-Nombre]] - Pasos 2-3
+If **step 3** fails, the order is fulfilled but flagged for manual warehouse notification.
 
-## Eventos Emitidos <!-- optional -->
+## Outcome <!-- required -->
 
-| Paso | Evento |
-|------|--------|
-| Al iniciar | [[EVT-Proceso-Iniciado]] |
-| En paso 2 | [[EVT-Tarea-Completada]] |
-| Al finalizar | [[EVT-Proceso-Completado]] |
+### On Success
 
-## Puntos de Integración <!-- optional -->
+- The [[Order]] transitions to `fulfilled`
+- All line items have reserved stock
+- An invoice exists linked to the order
+- The warehouse has a pending shipment
 
-- **Servicios externos**: APIs que se invocan
-- **Notificaciones**: Emails, push, etc.
-- **Persistencia**: Qué se guarda y cuándo
+### On Failure
+
+- The [[Order]] transitions to `pending-retry` or `failed` after max retries
+- No partial state remains (all steps compensated)

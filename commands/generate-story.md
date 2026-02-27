@@ -114,7 +114,7 @@ export const Error: Story = {}
 7. **Incluye comentarios** que referencien la spec:
 ```tsx
 /**
- * Wireframe generado desde: specs/04-interaction/components/PersonaCard.md
+ * Wireframe generado desde: specs/03-experience/components/PersonaCard.md
  * Estado: draft (pendiente de implementación real)
  *
  * TODO: Reemplazar wireframe con implementación real
@@ -131,7 +131,7 @@ export const Error: Story = {}
 ## Ejemplo de Invocación
 
 ```
-/kdd:generate-story specs/04-interaction/components/PersonaCard.md
+/kdd:generate-story specs/03-experience/components/PersonaCard.md
 ```
 
 ## Notas

@@ -10,7 +10,7 @@ import matter from 'gray-matter'
 export interface EntityEntry {
   /** Nombre canónico de la entidad */
   name: string
-  /** ID único de la entidad (ej: BR-RONDA-003, REQ-001.1) */
+  /** ID único de la entidad (ej: BR-001-Name, REQ-001.1) */
   id?: string
   /** Aliases adicionales */
   aliases: string[]
@@ -47,24 +47,27 @@ export async function buildEntityIndex(specsDir: string): Promise<EntityIndex> {
     sortedTerms: [],
   }
 
-  // Escanear directorios relevantes (estructura actual del proyecto)
+  // Escanear directorios relevantes (KDD v2.0 structure)
   const dirsToScan = [
-    // 02-domain: Modelo de dominio
-    { dir: '02-domain/entities', type: 'entity' as const },
-    { dir: '02-domain/events', type: 'event' as const },
-    { dir: '02-domain/rules', type: 'rule' as const },
-    // 03-capabilities: Comandos, queries, procesos
-    { dir: '03-capabilities/commands', type: 'use-case' as const },
-    { dir: '03-capabilities/queries', type: 'use-case' as const },
-    { dir: '03-capabilities/processes', type: 'process' as const },
-    // 04-interaction: UI y flujos de usuario
-    { dir: '04-interaction/use-cases', type: 'use-case' as const },
-    { dir: '04-interaction/screens', type: 'other' as const },
-    { dir: '04-interaction/flows', type: 'other' as const },
-    // 05-verification: Criterios y contratos
-    { dir: '05-verification/criteria', type: 'requirement' as const },
-    { dir: '05-verification/contracts', type: 'other' as const },
-    { dir: '05-verification/examples', type: 'other' as const },
+    // 01-domain: Domain model (BASE)
+    { dir: '01-domain/entities', type: 'entity' as const },
+    { dir: '01-domain/events', type: 'event' as const },
+    { dir: '01-domain/rules', type: 'rule' as const },
+    // 02-behavior: Operations and orchestration
+    { dir: '02-behavior/commands', type: 'use-case' as const },
+    { dir: '02-behavior/queries', type: 'use-case' as const },
+    { dir: '02-behavior/processes', type: 'process' as const },
+    { dir: '02-behavior/use-cases', type: 'use-case' as const },
+    { dir: '02-behavior/policies', type: 'rule' as const },
+    // 03-experience: UI and user interaction
+    { dir: '03-experience/views', type: 'other' as const },
+    { dir: '03-experience/components', type: 'other' as const },
+    // 04-verification: Criteria and tests
+    { dir: '04-verification/criteria', type: 'requirement' as const },
+    { dir: '04-verification/requirements', type: 'requirement' as const },
+    { dir: '04-verification/examples', type: 'other' as const },
+    // 05-architecture: Decisions (ORTHOGONAL)
+    { dir: '05-architecture/decisions', type: 'other' as const },
   ]
 
   for (const { dir, type } of dirsToScan) {
@@ -186,7 +189,7 @@ async function parseEntityFile(
     const h1Match = body.match(/^#\s+(.+)$/m)
     if (h1Match) {
       // Limpiar el H1 de prefijos como "UC-001:"
-      canonicalName = h1Match[1].replace(/^(UC|REQ|EVT|BR|PRC)-\d{3}:\s*/, '').trim()
+      canonicalName = h1Match[1].replace(/^(UC|REQ|EVT|BR|BP|XP|CMD|QRY|PROC|OBJ|UV|REL|VER|ADR)-\d{3,4}[^:]*:\s*/, '').trim()
     }
 
     // Obtener aliases del frontmatter

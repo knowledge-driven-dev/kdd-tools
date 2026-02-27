@@ -1,92 +1,81 @@
 ---
-# @type: adr
-# @description: Architecture Decision Record
 # @file-pattern: ^ADR-\d{4}.*\.md$
-# @path-pattern: architecture/adr/
+# @path-pattern: 05-architecture/decisions/
 
 id: ADR-NNNN                  # @required @pattern: ^ADR-\d{4}$
-kind: adr                     # @literal: adr
-status: proposed              # @enum: draft|proposed|approved|deprecated|superseded @default: proposed
-supersedes:                   # @type: array @optional @description: ADRs que este reemplaza
-  - ADR-XXXX
-superseded_by:                # @optional @description: ADR que reemplaza a este
-date: YYYY-MM-DD              # @optional @type: date
-deciders:                     # @type: array @optional
-  - Nombre 1
-  - Nombre 2
+kind: adr                     # @required
+status: draft                 # @required @enum: draft|review|approved|deprecated|superseded
+supersedes: []
+superseded_by:
 ---
 
-# ADR-NNNN: Título de la Decisión <!-- required pattern: ^ADR-\d{4}: -->
+# ADR-NNNN: Decision Title <!-- required pattern: ^ADR-\d{4}: -->
 
-## Estado <!-- optional -->
+## Context <!-- required -->
 
-Proposed | Accepted | Deprecated | Superseded by [[ADR-XXXX]]
+Description of the context and the problem that requires a decision:
 
-## Contexto <!-- required alias: Context -->
+- Current situation
+- Forces at play (requirements, constraints, concerns)
+- Why a decision needs to be made now
 
-Descripción del contexto y el problema que requiere una decisión:
+## Decision <!-- required -->
 
-- Situación actual
-- Fuerzas en juego (requisitos, restricciones, concerns)
-- Por qué se necesita tomar una decisión ahora
+The decision made:
 
-## Decisión <!-- required alias: Decision -->
+**We choose [chosen option] because [main reason].**
 
-La decisión tomada:
+Decision details:
+- What will be done
+- How it will be implemented
+- Who is responsible
 
-**Elegimos [opción elegida] porque [razón principal].**
+## Options Considered <!-- optional -->
 
-Detalles de la decisión:
-- Qué se hará
-- Cómo se implementará
-- Quién es responsable
+### Option 1: Name
 
-## Opciones Consideradas <!-- optional alias: Options|Alternatives -->
+- **Pros**: Advantages
+- **Cons**: Disadvantages
+- **Reason for rejection**: Why it was not chosen
 
-### Opción 1: Nombre
+### Option 2: Name
 
-- **Pros**: Ventajas
-- **Cons**: Desventajas
-- **Motivo de descarte**: Por qué no se eligió
+- **Pros**: Advantages
+- **Cons**: Disadvantages
+- **Reason for rejection**: Why it was not chosen
 
-### Opción 2: Nombre
+### Option 3: [Chosen]
 
-- **Pros**: Ventajas
-- **Cons**: Desventajas
-- **Motivo de descarte**: Por qué no se eligió
+- **Pros**: Advantages
+- **Cons**: Accepted disadvantages
+- **Reason for selection**: Why this was chosen
 
-### Opción 3: [Elegida]
+## Consequences <!-- required -->
 
-- **Pros**: Ventajas
-- **Cons**: Desventajas aceptadas
-- **Motivo de elección**: Por qué se eligió esta
+### Positive
 
-## Consecuencias <!-- required alias: Consequences -->
+- Benefit 1
+- Benefit 2
+- Improvement in X
 
-### Positivas
+### Negative
 
-- Beneficio 1
-- Beneficio 2
-- Mejora en X
+- Accepted trade-off 1
+- Additional complexity in Y
+- Potential technical debt in Z
 
-### Negativas
+### Neutral
 
-- Trade-off aceptado 1
-- Complejidad adicional en Y
-- Deuda técnica potencial en Z
+- Change that is neither positive nor negative
 
-### Neutrales
+## Implementation Plan <!-- optional -->
 
-- Cambio que no es ni positivo ni negativo
+1. Step 1
+2. Step 2
+3. Step 3
 
-## Plan de Implementación <!-- optional -->
+## References <!-- optional -->
 
-1. Paso 1
-2. Paso 2
-3. Paso 3
-
-## Referencias <!-- optional -->
-
-- Link a documentación relevante
-- Papers o artículos consultados
-- ADRs relacionados: [[ADR-XXXX]]
+- Link to relevant documentation
+- Papers or articles consulted
+- Related ADRs: [[ADR-XXXX]]

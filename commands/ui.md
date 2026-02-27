@@ -36,10 +36,10 @@ Explica brevemente el propósito y pregunta:
 
 Lee la documentación relevante para entender las entidades y casos de uso involucrados:
 
-- **Entidades**: `specs/02-domain/entities/` → identifica qué entidades se muestran o modifican
-- **Casos de uso**: `specs/04-interaction/use-cases/` → encuentra los UC relacionados
-- **Vistas existentes**: `specs/04-interaction/views/` → evita duplicados, identifica reutilización
-- **Reglas de negocio**: `specs/02-domain/rules/` → restricciones que afectan la UI
+- **Entidades**: `specs/01-domain/entities/` → identifica qué entidades se muestran o modifican
+- **Casos de uso**: `specs/02-behavior/use-cases/` → encuentra los UC relacionados
+- **Vistas existentes**: `specs/03-experience/views/` → evita duplicados, identifica reutilización
+- **Reglas de negocio**: `specs/01-domain/rules/` → restricciones que afectan la UI
 
 #### 2. Determina el tipo de artefacto
 
@@ -47,9 +47,9 @@ Clasifica según las señales en la descripción:
 
 | Señales | Tipo | Template | Ubicación |
 |---------|------|----------|-----------|
-| "card", "botón", "badge", "input", "item", "chip" | `ui-component` | `ui-component.template.md` | `specs/04-interaction/components/` |
-| "página", "vista", "pantalla", "dashboard", "listado" | `ui-view` | `ui-view.template.md` | `specs/04-interaction/views/` |
-| "flujo", "wizard", "pasos", "proceso", "onboarding" | `ui-flow` | `ui-flow.template.md` | `specs/04-interaction/flows/` |
+| "card", "botón", "badge", "input", "item", "chip" | `ui-component` | `ui-component.template.md` | `specs/03-experience/components/` |
+| "página", "vista", "pantalla", "dashboard", "listado" | `ui-view` | `ui-view.template.md` | `specs/03-experience/views/` |
+| "flujo", "wizard", "pasos", "proceso", "onboarding" | `ui-flow` | `ui-flow.template.md` | `specs/03-experience/flows/` |
 
 Si no está claro, pregunta al usuario cuál prefiere.
 
@@ -138,7 +138,7 @@ Muestra un resumen al usuario:
 
 - **Tipo**: {component|view|flow}
 - **Nombre**: UI-{Nombre}
-- **Ubicación**: specs/04-interaction/{tipo}s/UI-{Nombre}.md
+- **Ubicación**: specs/03-experience/{tipo}s/UI-{Nombre}.md
 - **Entidades**: [[A]], [[B]]
 - **Casos de uso**: [[UC-XXX]]
 - **Estados**: loading, empty, default, error
@@ -167,6 +167,6 @@ Con aprobación, crea el archivo en la ubicación correspondiente.
 ## Referencias
 
 - Templates: `${CLAUDE_PLUGIN_ROOT}/../kdd/templates/ui-*.template.md`
-- Vistas existentes: `specs/04-interaction/views/`
-- Entidades: `specs/02-domain/entities/`
-- Casos de uso: `specs/04-interaction/use-cases/`
+- Vistas existentes: `specs/03-experience/views/`
+- Entidades: `specs/01-domain/entities/`
+- Casos de uso: `specs/02-behavior/use-cases/`

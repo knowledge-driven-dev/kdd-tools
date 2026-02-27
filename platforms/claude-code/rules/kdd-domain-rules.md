@@ -2,123 +2,97 @@
 paths:
   - specs/01-domain/rules/**
   - specs/domains/*/01-domain/rules/**
+  - specs/02-behavior/policies/**
+  - specs/domains/*/02-behavior/policies/**
 ---
 
 # Reglas de Negocio KDD
 
-> Aplica cuando trabajas en `specs/01-domain/rules/`
+> Aplica cuando trabajas en `specs/01-domain/rules/` o `specs/02-behavior/policies/`
 
 ## Tipos de Regla
 
-| Tipo | Prefijo | Uso |
-|------|---------|-----|
-| Business Rule | `BR-` | Regla invariante, no configurable |
-| Business Policy | `BP-` | Política configurable con parámetros |
+| Tipo | Prefijo | Ubicación | Uso |
+|------|---------|-----------|-----|
+| Business Rule | `BR-` | `01-domain/rules/` | Regla invariante, no configurable |
+| Business Policy | `BP-` | `02-behavior/policies/` | Política configurable con parámetros |
+| Cross-Policy | `XP-` | `02-behavior/policies/` | Política que abarca múltiples dominios o entidades |
 
 ## Nombrado de Archivo
 
-Patrón: `BR-ENTIDAD-NNN.md` o `BP-ENTIDAD-NNN.md`
+Patrón: `{PREFIX}-NNN-{Name}.md`
 
 Ejemplos:
-- `BR-RETO-001.md`
-- `BR-SESION-003.md`
-- `BP-CREDITOS-001.md`
+- `BR-001-PersonaLimit.md`
+- `BR-003-SessionReady.md`
+- `BP-001-CreditRetention.md`
+- `XP-001-CrossDomainAudit.md`
 
 ## Frontmatter Requerido
 
 ```yaml
 ---
-id: BR-ENTIDAD-NNN            # Obligatorio
-kind: business-rule           # business-rule | business-policy
-title: Título de la Regla     # Obligatorio
-entity: NombreEntidad         # Entidad principal afectada
-category: validation          # validation|limit|state|security|business|policy|data
-severity: critical            # critical|high|medium|low
-status: draft                 # draft|review|approved|deprecated
+id: BR-001-PersonaLimit       # Obligatorio, matches filename
+kind: business-rule           # business-rule | business-policy | cross-policy
+status: draft                 # draft|review|approved|deprecated|superseded
 ---
 ```
 
 ## Estructura del Documento
 
-### Secciones Obligatorias
+### Required Sections
 
 ```markdown
-# BR-ENTIDAD-NNN: TítuloDeLaRegla
+# BR-NNN-Name
 
 ## Statement
-Descripción clara en lenguaje natural, comprensible por stakeholders
-no técnicos. Mencionar entidades con wiki-links: [[Entidad]].
+Clear description in natural language, understandable by non-technical
+stakeholders. Reference entities with wiki-links: [[Entity]].
 
 ## Rationale
-Razón de negocio. Explica el riesgo que previene o beneficio que protege.
+Business reason. Explain the risk it prevents or the benefit it protects.
 
 ## When Applies
-Puntos del ciclo de vida donde se evalúa (crear, modificar, cambio de estado).
+Lifecycle points where the rule is evaluated (create, update, state change).
 
 ## Violation Behavior
-Resultado esperado cuando falla: error visible, operación bloqueada, etc.
+Expected result on failure: visible error, blocked operation, etc.
 
 ## Examples
 
 ### Valid Cases
-- ✓ Ejemplo de escenario válido
-- ✓ Otro escenario válido
+- ✓ Valid scenario example
+- ✓ Another valid scenario
 
 ### Invalid Cases
-- ✗ Escenario inválido → comportamiento esperado
-- ✗ Otro escenario inválido → comportamiento esperado
+- ✗ Invalid scenario → expected behavior
+- ✗ Another invalid scenario → expected behavior
 ```
 
-### Secciones Opcionales
+### Optional Sections
 
 ```markdown
-## Parameters (solo BP)
-Parámetros configurables y valores por defecto.
+## Parameters (BP and XP only)
+Configurable parameters and default values.
 
 ## Formalization
-WHEN/IF [condición],
-the system SHALL [acción]
-  AND SHALL NOT [prohibición].
+WHEN/IF [condition],
+the system SHALL [action]
+  AND SHALL NOT [prohibition].
 
-## Implementation
 ## Notes
 ```
-
-## Categorías
-
-| Categoría | Descripción | Ejemplo |
-|-----------|-------------|---------|
-| `validation` | Validación de datos | Título requerido |
-| `limit` | Límites numéricos | Máximo 6 personas |
-| `state` | Transiciones de estado | Solo borrador puede editarse |
-| `security` | Seguridad/permisos | Solo propietario puede eliminar |
-| `business` | Lógica de negocio | Créditos insuficientes |
-| `policy` | Política configurable | Días de retención |
-| `data` | Integridad de datos | Referencias válidas |
-
-## Severidad
-
-| Nivel | Cuándo usar |
-|-------|-------------|
-| `critical` | Violación causa corrupción de datos o seguridad |
-| `high` | Violación bloquea funcionalidad core |
-| `medium` | Violación afecta experiencia pero hay workaround |
-| `low` | Violación es cosmética o menor |
 
 ## Ejemplo Completo
 
 ```markdown
 ---
-id: BR-RETO-001
+id: BR-001-PersonaLimit
 kind: business-rule
-title: Límite de Personas Sintéticas
-entity: Reto
-category: limit
-severity: high
 status: approved
 ---
 
-# BR-RETO-001: Límite de Personas Sintéticas
+# BR-001-PersonaLimit
 
 ## Statement
 

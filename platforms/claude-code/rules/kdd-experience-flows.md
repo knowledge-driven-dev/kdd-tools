@@ -22,15 +22,7 @@ Ejemplos:
 ```yaml
 ---
 kind: ui-flow
-status: draft
-version: "1.0"
-links:
-  entities: []              # Entidades involucradas
-  use-cases: []             # Use cases implementados
-  views: []                 # Vistas que componen el flujo
-storybook:
-  category: "Flows"
-  auto-generate: true
+status: draft                 # draft | review | approved | deprecated | superseded
 ---
 ```
 
@@ -192,11 +184,6 @@ flowchart TD
 ---
 kind: ui-flow
 status: draft
-version: "1.0"
-links:
-  entities: [Reto, PersonaSintetica]
-  use-cases: [UC-001, UC-002]
-  views: [VIEW-NewChallenge, VIEW-ConfigureChallenge]
 ---
 
 # Flow: CreateChallenge

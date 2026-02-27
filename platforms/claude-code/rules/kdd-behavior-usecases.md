@@ -23,10 +23,7 @@ Ejemplos:
 ---
 id: UC-NNN                    # Obligatorio, patrón UC-\d{3}
 kind: use-case                # Literal
-version: 1                    # Número de versión
-status: draft                 # draft|proposed|approved|deprecated
-actor: Usuario                # Actor principal
-domain: six-hats              # Dominio (opcional)
+status: draft                 # draft|review|approved|deprecated|superseded
 ---
 ```
 
@@ -160,9 +157,7 @@ Usar número del paso + letra:
 ---
 id: UC-001
 kind: use-case
-version: 1
 status: approved
-actor: Usuario
 ---
 
 # UC-001: Crear Reto
