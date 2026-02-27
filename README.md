@@ -187,6 +187,21 @@ bunx kdd-generate-index ./specs
 
 ---
 
+## Documentation
+
+| Guide | Description |
+|-------|-------------|
+| [Getting Started](docs/getting-started.md) | First-time setup, first spec, first validation |
+| [Command Reference](docs/commands.md) | All 9 `/kdd:*` commands with syntax, arguments, and examples |
+| [Skills, Rules, and Hooks](docs/skills-and-rules.md) | What activates automatically and when |
+| [Validator Guide](docs/validator-guide.md) | Deep dive into the three validation levels |
+| [Workflows](docs/workflows.md) | Common patterns: new feature, add UI, validate before PR, iterate |
+| [Storybook Workflow](docs/storybook-workflow.md) | Turn UI specs into Storybook wireframes |
+| [Validation Tooling](docs/validation-tooling.md) | AI analysis commands and CI/CD integration |
+| [Graph RAG](docs/graph-rag.md) | Node types and edges for semantic indexing |
+
+---
+
 ## Related
 
 - **[kdd-specs](https://github.com/knowledge-driven-dev/kdd)** — Canonical layer structure, templates, and methodology reference
