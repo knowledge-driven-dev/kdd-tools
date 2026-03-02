@@ -38,7 +38,7 @@ kdd-tools/
 ```
 projects/
 ├── kdd/                          ← kdd-specs: methodology + templates
-├── kdd-claude-code/              ← kdd-tools: this repo
+├── kdd-tools/                    ← this repo
 └── your-project/
     ├── specs/                    ← Your KDD specifications
     └── .claude/settings.local.json
@@ -48,25 +48,25 @@ projects/
 
 ## Installation (Claude Code)
 
-### Option A: Plugin directory
+### Option A: Plugin directory flag (development)
 
 ```bash
 # From your project directory
-claude --plugin-dir ../kdd-claude-code/platforms/claude-code
+claude --plugin-dir ../kdd-tools/platforms/claude-code
 ```
 
-### Option B: settings.local.json
+### Option B: Install command (recommended)
 
-```json
-{
-  "pluginDirs": ["../kdd-claude-code/platforms/claude-code"]
-}
+From inside Claude Code, run:
+
+```
+/plugin install ../kdd-tools/platforms/claude-code
 ```
 
 ### Option C: Global install
 
 ```bash
-cp -r kdd-claude-code/platforms/claude-code ~/.claude/plugins/kdd
+cp -r kdd-tools/platforms/claude-code ~/.claude/plugins/kdd
 ```
 
 ---

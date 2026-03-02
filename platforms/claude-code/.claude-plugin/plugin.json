@@ -1,0 +1,11 @@
+{
+  "name": "kdd",
+  "description": "KDD (Knowledge-Driven Development) plugin — skills, commands, rules, and hooks for writing and validating KDD specifications.",
+  "version": "2.0.0",
+  "author": {
+    "name": "Knowledge-Driven Dev"
+  },
+  "repository": "https://github.com/knowledge-driven-dev/kdd-tools",
+  "license": "MIT",
+  "keywords": ["kdd", "specifications", "domain-driven", "validation"]
+}

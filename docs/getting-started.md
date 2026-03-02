@@ -31,29 +31,29 @@ projects/
 
 Choose one of three options. All are equivalent — pick what fits your workflow.
 
-### Option A: CLI Flag (per session)
+### Option A: Plugin directory flag (per session, for development)
 
 ```bash
 cd your-project
 claude --plugin-dir ../kdd-tools/platforms/claude-code
 ```
 
-### Option B: Project Settings (recommended)
+### Option B: Install command (recommended)
 
-Create or edit `.claude/settings.local.json` in your project:
-
-```json
-{
-  "pluginDirs": ["../kdd-tools/platforms/claude-code"]
-}
-```
-
-Then start Claude Code normally:
+Start Claude Code and install the plugin:
 
 ```bash
 cd your-project
 claude
 ```
+
+Then inside Claude Code:
+
+```
+/plugin install ../kdd-tools/platforms/claude-code
+```
+
+The plugin persists across sessions — you only need to install once.
 
 ### Option C: Global Install
 
