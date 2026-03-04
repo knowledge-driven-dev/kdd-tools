@@ -48,25 +48,35 @@ projects/
 
 ## Installation (Claude Code)
 
-### Option A: Plugin directory flag (development)
+### Option A: Plugin directory flag (per session, for development)
 
 ```bash
 # From your project directory
 claude --plugin-dir ../kdd-tools/platforms/claude-code
 ```
 
-### Option B: Install command (recommended)
+This loads the plugin for the current session only. Useful during development.
 
-From inside Claude Code, run:
+### Option B: Symlink install (recommended for local use)
 
+```bash
+ln -s "$(realpath kdd-tools/platforms/claude-code)" ~/.claude/plugins/kdd
 ```
-/plugin install ../kdd-tools/platforms/claude-code
-```
 
-### Option C: Global install
+This creates a persistent symlink — changes in the repo are reflected immediately.
+
+### Option C: Copy install
 
 ```bash
 cp -r kdd-tools/platforms/claude-code ~/.claude/plugins/kdd
+```
+
+### Option D: Marketplace install (when published)
+
+Once the plugin is published to a marketplace, from inside Claude Code:
+
+```
+/plugin install kdd@<marketplace-name>
 ```
 
 ---
