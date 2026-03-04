@@ -54,13 +54,16 @@ Creates a persistent symlink so changes in the repo are immediately available. Y
 cp -r kdd-tools/platforms/claude-code ~/.claude/plugins/kdd
 ```
 
-### Option D: Marketplace install (when published)
+### Option D: Marketplace install
 
-Once the plugin is published to a Claude Code marketplace, from inside Claude Code:
+From inside Claude Code, add the marketplace and install the plugin:
 
 ```
-/plugin install kdd@<marketplace-name>
+/plugin marketplace add knowledge-driven-dev/kdd-tools
+/plugin install kdd@kdd-tools
 ```
+
+The marketplace is backed by the GitHub repo — updates are fetched automatically.
 
 ### Verify Installation
 
