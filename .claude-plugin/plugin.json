@@ -18,6 +18,7 @@
   ],
   "license": "MIT",
   "commands": [
+    "./commands/init.md",
     "./commands/feature.md",
     "./commands/ui.md",
     "./commands/fix-spec.md",

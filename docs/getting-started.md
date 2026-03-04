@@ -67,20 +67,32 @@ The marketplace is backed by the GitHub repo — updates are fetched automatical
 
 ### Verify Installation
 
-Once inside Claude Code, type `/kdd:` — you should see autocomplete suggestions for all 9 commands:
+Once inside Claude Code, type `/kdd:` — you should see autocomplete suggestions for all 10 commands:
 
 ```
-/kdd:feature          /kdd:validate         /kdd:generate-story
-/kdd:ui               /kdd:validate-deps    /kdd:sync-story
-/kdd:fix-spec         /kdd:list-entities
-/kdd:analyze-entities
+/kdd:init             /kdd:validate         /kdd:generate-story
+/kdd:feature          /kdd:validate-deps    /kdd:sync-story
+/kdd:ui               /kdd:list-entities
+/kdd:fix-spec         /kdd:analyze-entities
 ```
 
 ---
 
 ## Create Your Specs Directory
 
-KDD v2.0 uses a layered folder structure. Create the full tree:
+KDD v2.0 uses a layered folder structure. You can set it up automatically or manually.
+
+### Option A: Automatic setup (recommended)
+
+```
+/kdd:init --all --no-confirm
+```
+
+This creates all spec directories, copies reference templates, installs a pre-commit validation hook, and adds a `validate:specs` script to your `package.json`. Run `/kdd:init` without arguments for an interactive menu where you can pick individual components.
+
+### Option B: Manual
+
+Create the full directory tree:
 
 ```bash
 mkdir -p specs/{00-requirements,01-domain/{entities,events,rules},02-behavior/{commands,queries,use-cases,processes,policies},03-experience/{views,components,flows},04-verification/{criteria,examples},05-architecture/decisions}
