@@ -249,13 +249,78 @@ You didn't need to know about these — they just ensured everything was correct
 
 ---
 
+## Team Onboarding
+
+If you already set up KDD in your project and pushed it to git, new team members only need to do the following after cloning:
+
+### 1. Install Claude Code
+
+```bash
+claude --version   # verify it's installed
+```
+
+### 2. Install the KDD plugin
+
+```bash
+# Clone kdd-tools (once, alongside the project)
+git clone https://github.com/knowledge-driven-dev/kdd-tools.git
+
+# Persistent install via symlink
+ln -s "$(realpath kdd-tools/platforms/claude-code)" ~/.claude/plugins/kdd
+```
+
+Or via Marketplace inside Claude Code:
+
+```
+/plugin marketplace add knowledge-driven-dev/kdd-tools
+/plugin install kdd@kdd-tools
+```
+
+### 3. Install the pre-commit hook
+
+The `.git/hooks/` directory is local and not tracked by git. After cloning, run inside Claude Code:
+
+```
+/kdd:init --hook --no-confirm
+```
+
+### What arrives with `git clone`
+
+- `specs/` — full directory structure and existing specs
+- `specs/.templates/` — reference templates
+- `package.json` — with `validate:specs` script
+
+### What doesn't (needs local setup)
+
+- The KDD plugin for Claude Code (step 2)
+- The pre-commit validation hook (step 3)
+
+### README snippet for your project
+
+Add something like this to your project's README to help new team members:
+
+```markdown
+## KDD Setup
+
+This project uses [KDD](https://github.com/knowledge-driven-dev/kdd-tools) for specification-driven development.
+
+### First-time setup
+
+1. Install the KDD plugin:
+   ln -s "$(realpath ../kdd-tools/platforms/claude-code)" ~/.claude/plugins/kdd
+2. Install the pre-commit hook:
+   Open Claude Code and run `/kdd:init --hook --no-confirm`
+```
+
+---
+
 ## Next Steps
 
 Now that you have a working KDD setup, explore these resources:
 
 | Guide | What You'll Learn |
 |-------|------------------|
-| [Command Reference](commands.md) | All 9 `/kdd:*` commands with syntax, arguments, and examples |
+| [Command Reference](commands.md) | All 10 `/kdd:*` commands with syntax, arguments, and examples |
 | [Skills, Rules, and Hooks](skills-and-rules.md) | What activates automatically and when |
 | [Validator Guide](validator-guide.md) | Deep dive into the three validation levels |
 | [Workflows](workflows.md) | Common patterns: new feature, add UI, validate before PR, iterate |
