@@ -8,7 +8,7 @@
       "name": "kdd",
       "source": "./platforms/claude-code",
       "description": "KDD (Knowledge-Driven Development) — skills, commands, rules, and hooks for writing and validating KDD specifications.",
-      "version": "2.0.0"
+      "version": "0.0.2"
     }
   ]
 }
