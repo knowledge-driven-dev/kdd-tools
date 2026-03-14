@@ -1,16 +1,6 @@
 {
   "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "./hooks/scripts/spec-guard-pre.sh"
-          }
-        ]
-      }
-    ],
+
     "PostToolUse": [
       {
         "matcher": "Write|Edit",
