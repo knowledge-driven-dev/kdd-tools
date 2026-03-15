@@ -1,7 +1,7 @@
 {
   "name": "kdd",
   "description": "KDD (Knowledge-Driven Development) plugin — skills, commands, rules, and hooks for writing and validating KDD specifications.",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "author": {
     "name": "Knowledge-Driven Dev"
   },
